@@ -78,7 +78,23 @@ window.addEventListener('DOMContentLoaded', () => {
     highlightHintCell(randomHintIndex);
     statusMessage.textContent = "Here's a hint!";
   }
+// ================== Google Apps Script URL ===================
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzVhs4Akuq6o9f3rWy1lG6jHclmQu2K1GoJn62ZFYVCua1Jy84IBOrN7z4WMvdIBoqT/exec';
 
+// ================== Score Submit Function ====================
+function submitScore(name) {
+  fetch(scriptURL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: name })
+  })
+  .then(res => res.text())
+  .then(res => {
+    console.log("Submitted:", res);
+    fetchLeaderboard(); // अगर आप लीडरबोर्ड दिखा रहे हैं तो इसे चालू रखें
+  })
+  .catch(err => console.error("Error submitting score:", err));
+}
   function highlightHintCell(index) {
     document.querySelectorAll('.cell').forEach(cell => {
       cell.classList.remove('hint-highlight');
@@ -361,29 +377,37 @@ function makeMove(index, player) {
 
     // Check for Win
     if (checkWin(board, player)) {
-      gameOver = true;
+  gameOver = true;
 
-      const winningLine = getWinningLine(board, player);
-      drawWinLine(winningLine);
-      highlightWin(player);
+  const winningLine = getWinningLine(board, player);
+  drawWinLine(winningLine);
+  highlightWin(player);
 
-      // आखिरी move highlights हटा दो
-      lastPlayerMoveIndex = null;
-      lastAIMoveIndex = null;
-      highlightLastMove();
+  lastPlayerMoveIndex = null;
+  lastAIMoveIndex = null;
+  highlightLastMove();
 
-      if (player === 'X') {
-        winCount++;
-        statusMessage.textContent = 'You win!';
-        playAgainBtn.style.display = 'block';
-      } else {
-        lossCount++;
-        statusMessage.textContent = 'AI wins!';
-        tryAgainBtn.style.display = 'block';
+  if (player === 'X') {
+    winCount++;
+    statusMessage.textContent = 'You win!';
+    playAgainBtn.style.display = 'block';
+
+    // ✅ जीतने पर नाम पूछें और Google Sheet में भेजें
+    if (gameLevel === 'God') {
+      const playerName = prompt("You defeated God AI! Enter your name:");
+      if (playerName) {
+        submitScore(playerName);
       }
-
-      updateScoreboard();
     }
+
+  } else {
+    lossCount++;
+    statusMessage.textContent = 'AI wins!';
+    tryAgainBtn.style.display = 'block';
+  }
+
+  updateScoreboard();
+}
 
     // Check for Draw
     else if (board.every(cell => cell !== null)) {
