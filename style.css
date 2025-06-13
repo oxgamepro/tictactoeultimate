@@ -405,7 +405,12 @@ margin-left:0.5vw;
   border: 1.5vw  #5A4242;
 }
 
-.winner-list {
+.leaderboard *{
+  text-decoration: none !important;
+  
+}
+
+.leaderboard {
   font-family: Arial, sans-serif;
   font-size: 3vw;
   overflow-y: auto;
@@ -415,7 +420,7 @@ padding-top:1vh;
   background-color: #E3F2FD;
   border-radius:0 0 5% 5%;
   scrollbar-width: thin;
-  color:  #1A237E;
+  
   position: relative;
   right: 1vw;
   width: 27vw;
@@ -424,8 +429,6 @@ padding-top:1vh;
   top:-6.3vh ;
   
 }
-
-
 .footer {
   margin-bottom: 0.1vh;
   display: flex;
