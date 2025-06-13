@@ -90,11 +90,8 @@
       <!-- Right Section with LIVE Leaderboard -->
       <aside class="winners-section" aria-label="GOD MODE Leaderboard">
         <h2><span aria-hidden="true">🔥</span> GOD MODE Leaderboard <span aria-hidden="true">🏆</span></h2>
-
-
-        <!-- Leaderboard Section -->
-        <div class="leaderboard-title">Live Rankings</div>
-        <div class="leaderboard"></div>
+  
+        <ol class="leaderboard"></ol>
         <div id="player-details"></div>
       </aside>
 
@@ -113,9 +110,10 @@
 
   <!-- Scripts -->
 <script src="script.js"></script>
+<script src="script21.js"></script>
 
 <script>
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbzVhs4Akuq6o9f3rWy1lG6jHclmQu2K1GoJn62ZFYVCua1Jy84IBOrN7z4WMvdIBoqT/exec';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwc30OLmxpM07us12zvGFEC7BKhaBbaaJ_y0Pttc1KdO7KgKUpBQQ7KoQVACLT2_pTq/exec';
 
   async function fetchLeaderboard() {
     try {
@@ -128,12 +126,12 @@
       data.forEach(entry => {
         const [rank, name, wins] = entry;
 
-        const nameDiv = document.createElement("div");
-        nameDiv.textContent = name;
+const nameDiv = document.createElement("div");
+  nameDiv.textContent = `${rank}. ${name}`;  // 👈 अब रैंक और नाम दोनों दिखेंगे
 
-        nameDiv.addEventListener("click", () => {
-          showPlayerDetails(rank, name, wins);
-        });
+  nameDiv.addEventListener("click", () => {
+    showPlayerDetails(rank, name, wins);
+  });
 
         leaderboardDiv.appendChild(nameDiv);
       });
@@ -171,4 +169,4 @@
   fetchLeaderboard();
 </script>
 </body>
-    </html>
+  </html>
