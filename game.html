@@ -127,8 +127,12 @@
  <div class="game-wrapper">
     <div class="game-board"></div>
         <div class="win-line" id="win-line"></div>
+</div><div id="name-input-wrapper" style="display: none; text-align: center; margin-top: 20px;">
+  <label for="player-name-input">Enter your name to submit score:</label><br>
+  <input type="text" id="player-name-input" placeholder="Your name" style="padding: 5px; font-size: 16px;" />
+  <button onclick="submitScoreFromInput()" style="padding: 5px 10px; font-size: 16px;">Submit</button>
 </div>
-<button onclick="submitScore('TestPlayer')">Send Score</button>
+
     <div class="bottom-bar">
       
       
@@ -173,13 +177,43 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });</script>
 
+
+
+
+<script>
+// ✅ Google Apps Script URL (आपका दिया हुआ)
+const scriptURL = "https://script.google.com/macros/s/AKfycbwc30OLmxpM07us12zvGFEC7BKhaBbaaJ_y0Pttc1KdO7KgKUpBQQ7KoQVACLT2_pTq/exec";
+
+// ✅ यह function जीतने के बाद नाम सबमिट करने के लिए कॉल होगा
+function submitScore(name) {
+  console.log("⚙️ submitScore() called with name →", `"${name}"`);
+
+  fetch(scriptURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name: name })  // सिर्फ नाम भेजा जा रहा है
+  })
+  .then(response => {
+    console.log("🌐 fetch response status →", response.status);
+    return response.text();
+  })
+  .then(text => {
+    console.log("✅ server replied →", text);  // Success expected
+    // अगर कुछ और करना हो तो यहाँ करें
+  })
+  .catch(err => {
+    console.error("❌ fetch error:", err);
+    alert("Error submitting score. Please try again.");
+  });
+}
+</script>
   <!-- External JavaScript Files -->
   
 <!-- JS -->
 <script src="script.js"></script>
 <script src="script21.js"></script>
-
-
 
 </body>
   </html>
