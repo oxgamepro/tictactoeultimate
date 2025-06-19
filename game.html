@@ -181,33 +181,51 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 
-<script>
-// ✅ Google Apps Script URL (आपका दिया हुआ)
-const scriptURL = "https://script.google.com/macros/s/AKfycbwZyiWvDTuLtm5rTan-QYOWc8--ltu-OEjvBzoKN_rz/dev";
+script>
+  // ================== Google Apps Script URL ===================
+const scriptURL =
+  "https://script.google.com/macros/s/AKfycbxSgfpQKiTksf5SWThMr-BVIPicXQ_G0ZfkfcWdVyF5QIdsWsZCpH52Qv8djtK4ID4i/exec";
 
-// ✅ यह function जीतने के बाद नाम सबमिट करने के लिए कॉल होगा
+// ================== Score Submit Function (with debugging) ===
 function submitScore(name) {
-  console.log("⚙️ submitScore() called with name →", `"${name}"`);
+  // 1️⃣ सबसे पहले: यह देख लें कि जीतते समय नाम मिला या नहीं
+  console.log("⚙️  submitScore() called with name →", `"${name}"`);
 
   fetch(scriptURL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ name: name })  // सिर्फ नाम भेजा जा रहा है
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: name })
   })
-  .then(response => {
-    console.log("🌐 fetch response status →", response.status);
-    return response.text();
-  })
-  .then(text => {
-    console.log("✅ server replied →", text);  // Success expected
-    // अगर कुछ और करना हो तो यहाँ करें
-  })
-  .catch(err => {
-    console.error("❌ fetch error:", err);
-    alert("Error submitting score. Please try again.");
-  });
+    // 2️⃣ नेटवर्क-टैब से पहले: पूरी request object देखना चाहें तो…
+    .then(response => {
+      console.log("🌐 fetch response status →", response.status);
+      return response.text();          // response को आगे पास करें
+    })
+    // 3️⃣ Apps Script से जो string लौटी, वह यहाँ दिखेगी
+    .then(text => {
+      console.log("✅ server replied →", text); // आम तौर पर “Success”
+      fetchLeaderboard();                       // (ज़रूरत हो तो)
+    })
+    .catch(err => console.error("❌ fetch error:", err));
+}
+</script>
+
+
+<script>
+function submitScoreFromInput() {
+  const name = document.getElementById("player-name-input").value.trim();
+  if (!name) {
+    alert("⚠️ Please enter your name!");
+    return;
+  }
+
+  // यहां external JS फाइल वाला function call हो रहा है
+  if (typeof submitScore === 'function') {
+    submitScore(name); // ✅ यह तभी चलेगा जब script.js ठीक से load हुआ हो
+  } else {
+    alert("❌ Error: submitScore function not found!");
+    console.error("submitScore is not defined. Make sure script.js is loaded correctly.");
+  }
 }
 </script>
   <!-- External JavaScript Files -->
