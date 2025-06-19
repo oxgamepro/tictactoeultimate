@@ -102,7 +102,8 @@
 <script src="script.js"></script>
 <script src="script21.js"></script>
 
-<script>
+<script>document.addEventListener("DOMContentLoaded", () => {
+  
   const scriptURL = 'https://script.google.com/macros/s/AKfycbxSgfpQKiTksf5SWThMr-BVIPicXQ_G0ZfkfcWdVyF5QIdsWsZCpH52Qv8djtK4ID4i/exec';
 
   async function fetchLeaderboard() {
@@ -157,6 +158,7 @@ const nameDiv = document.createElement("div");
 
   // Call on page load
   fetchLeaderboard();
+});
 </script>
 </body>
   </html>
