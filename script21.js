@@ -296,32 +296,6 @@ function handleCellClick(e) {
 });
   vibrateDevice();
   const index = e.target.getAttribute('data-index');
-  if (gameOver || board[index]) return;
-
-  makeMove(index, currentPlayer);
-
-  if (!gameOver) {
-    statusMessage.textContent = 'AI is thinking...';
-    startAIThinkingAnimation();
-
-    setTimeout(() => {
-      stopAIThinkingAnimation();
-      aiMove();
-    }, 300);
-  }
-}
-
-
-function setFontSizeBasedOnCell(cell) {
-  const height = cell.clientHeight;
-  // font-size को cell height का 70% रखो
-  cell.style.fontSize = (height * 0.7) + 'px';
-}
-
-
-
-
-// ==================== Make Move Function ===================
 function makeMove(index, player) {
   if (!board[index]) {
     board[index] = player;
@@ -375,29 +349,32 @@ function makeMove(index, player) {
       highlightLastMove();
 
       if (player === 'X') {
-        winCount++;
-        statusMessage.textContent = 'You win!';
-        playAgainBtn.style.display = 'block';
+  winCount++;
+  statusMessage.textContent = 'You win!';
+  playAgainBtn.style.display = 'block';
 
-        // ✅ God level जीतने पर नाम 500ms बाद पूछें
-        const gameLevel = localStorage.getItem('selectedGameLevel');
-        if (gameLevel && gameLevel.toLowerCase() === 'god') {
-          setTimeout(() => {
-            const playerName = prompt("You defeated God AI! Enter your name:");
-            if (playerName) {
-              submitScore(playerName);
-            } else {
-              document.getElementById('name-input-wrapper').style.display = 'block';
-            }
-          }, 500); // विज़ुअल अपडेट के बाद नाम पूछें
-        }
+  // ✅ सिर्फ God level जीत पर नाम पूछो और submit करो
+  const gameLevel = localStorage.getItem('selectedGameLevel');
+  if (gameLevel && gameLevel.toLowerCase() === 'god') {
+    setTimeout(() => {
+      const playerName = prompt("🔥 You defeated God AI! Enter your name:");
 
+      if (playerName && playerName.trim()) {
+        submitScore(playerName.trim());
       } else {
-        lossCount++;
-        statusMessage.textContent = 'AI wins!';
-        tryAgainBtn.style.display = 'block';
+        alert("⚠️ Name not submitted.");
+        // Optional: कोई fallback UI दिखाना हो तो करें
+        const nameBox = document.getElementById('name-input-wrapper');
+        if (nameBox) nameBox.style.display = 'block';
       }
+    }, 500);
+  }
 
+} else {
+  lossCount++;
+  statusMessage.textContent = 'AI wins!';
+  tryAgainBtn.style.display = 'block';
+}
       updateScoreboard();
     }
 
@@ -419,6 +396,40 @@ function makeMove(index, player) {
     }
   }
 }
+function onGameWin() {
+  const name = prompt("🔥 God Mode Winner! Enter your name:");
+  if (name && name.trim()) {
+    submitScore(name.trim());
+  } else {
+    alert("❗Name not submitted.");
+  }
+}  if (gameOver || board[index]) return;
+
+  makeMove(index, currentPlayer);
+
+  if (!gameOver) {
+    statusMessage.textContent = 'AI is thinking...';
+    startAIThinkingAnimation();
+
+    setTimeout(() => {
+      stopAIThinkingAnimation();
+      aiMove();
+    }, 300);
+  }
+}
+
+
+function setFontSizeBasedOnCell(cell) {
+  const height = cell.clientHeight;
+  // font-size को cell height का 70% रखो
+  cell.style.fontSize = (height * 0.7) + 'px';
+}
+
+
+
+
+// ==================== Make Move Function ===================
+
 
 // ==================== Highlight Last Move ===================
 function highlightLastMove(byWhom) {
