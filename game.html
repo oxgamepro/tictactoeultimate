@@ -232,6 +232,40 @@ function submitScoreFromInput() {
 <!-- JS -->
 <script src="script.js"></script>
 <script src="script21.js"></script>
+  <!-- ✅ Debug log viewer -->
+<div id="debug-log" style="background:#111; color:#0f0; font-family:monospace; font-size:14px; padding:10px; margin:10px; max-height:200px; overflow:auto;">
+  <strong>📋 Debug Console:</strong><br>
+</div>
+
+<script>
+(function setupDebugConsole() {
+  const logDiv = document.getElementById("debug-log");
+  function logToDiv(type, args) {
+    const msg = Array.from(args).map(a => (typeof a === "object" ? JSON.stringify(a) : a)).join(" ");
+    const el = document.createElement("div");
+    el.textContent = `[${type}] ${msg}`;
+    logDiv.appendChild(el);
+    logDiv.scrollTop = logDiv.scrollHeight;
+  }
+
+  const originalLog = console.log;
+  const originalError = console.error;
+
+  console.log = function (...args) {
+    originalLog.apply(console, args);
+    logToDiv("LOG", args);
+  };
+
+  console.error = function (...args) {
+    originalError.apply(console, args);
+    logToDiv("ERROR", args);
+  };
+
+  window.addEventListener("error", function (e) {
+    logToDiv("JS ERROR", [e.message]);
+  });
+})();
+</script>
 
 </body>
       </html>
