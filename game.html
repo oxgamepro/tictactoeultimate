@@ -178,7 +178,22 @@ window.addEventListener('DOMContentLoaded', () => {
 });</script>
 
 
-
+<script>function submitScore(name) {
+  fetch("https://script.google.com/macros/s/AKfycbw9Exa_jMj7fMLH5lDz6S3TQZQ8IBaFxW0MwfeA0BLYbzFUwNaVRoMGe9_fKtVp9bf7/exec", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name: name }),
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log("✅ Submitted:", data);
+  })
+  .catch(error => {
+    console.error("❌ Fetch error:", error);
+  });
+}</script>
 
 <script>
   // ================== Google Apps Script URL ===================
