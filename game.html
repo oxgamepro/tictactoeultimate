@@ -32,7 +32,7 @@
 <body>
   <div class="container">
     <header>
-      <h1 class="text-3d-wrapper">
+      <h1 translate="no" class="text-3d-wrapper">
         <span class="text-3d">OX Game Pro</span>
       </h1>
     </header>
@@ -120,19 +120,18 @@
             
           </span>
         </div>
-       </div>
+         </div>
     </div>
     
 
  <div class="game-wrapper">
     <div class="game-board"></div>
         <div class="win-line" id="win-line"></div>
-</div><div id="name-input-wrapper" style="display: none; text-align: center; margin-top: 20px;">
-  <label for="player-name-input">Enter your name to submit score:</label><br>
-  <input type="text" id="player-name-input" placeholder="Your name" style="padding: 5px; font-size: 16px;" />
-  <button onclick="submitScoreFromInput()" style="padding: 5px 10px; font-size: 16px;">Submit</button>
+</div><!-- Hidden box जो जीतने के बाद दिखे -->
+<div id="name-input-wrapper" style="display:none;">
+  <input type="text" id="player-name-input" placeholder="Enter your name" />
+  <button onclick="submitScoreFromInput()">Submit</button>
 </div>
-
     <div class="bottom-bar">
       
       
@@ -178,31 +177,69 @@ window.addEventListener('DOMContentLoaded', () => {
 });</script>
 
 <script src="script.js"></script>
-<script src="script21.js"></script><script>
-function submitScore(name) {
-  const proxy = "https://thingproxy.freeboard.io/fetch/";
-  const scriptURL = "https://script.google.com/macros/s/AKfycbw9Exa_jMj7fMLH5lDz6S3TQZQ8IBaFxW0MwfeA0BLYbzFUwNaVRoMGe9_fKtVp9bf7/exec";
-  
-  console.log("⚙️ submitScore() called with:", name);
+<script src="script21.js"></script>
+<!-- Firebase SDKs (already होने चाहिए) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
-  fetch(proxy + scriptURL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name: name })
-  })
-    .then(res => res.text())
-    .then(text => {
-      console.log("✅ Server replied:", text);
-      alert("✅ नाम भेजा गया!");
-      document.getElementById('name-input-wrapper').style.display = "none";
-    })
-    .catch(error => {
-      console.error("❌ Fetch error:", error);
-      alert("❌ नाम भेजने में error आया");
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBeGU1zEnmYmj2AM-IGG--5RHDtrzplsWE",
+    authDomain: "leaderboard-15c73.firebaseapp.com",
+    databaseURL: "https://leaderboard-15c73-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "leaderboard-15c73",
+    storageBucket: "leaderboard-15c73.appspot.com",
+    messagingSenderId: "981645460996",
+    appId: "1:981645460996:web:a33c923a13df74ed7b9751"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // ✅ नाम फॉर्मेट करने वाला function
+  function formatNameProperly(rawName) {
+    return rawName
+      .toLowerCase()
+      .split(" ")
+      .filter(Boolean)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+
+  // ✅ Firebase में नाम और जीतें भेजने वाला function
+  function submitScore(playerNameRaw) {
+    const playerName = formatNameProperly(playerNameRaw);  // यहां पर format करके ही भेज रहे हैं
+
+    const playerRef = db.ref("scores/" + playerName);
+
+    playerRef.once("value").then(snapshot => {
+      const currentWins = snapshot.exists() ? snapshot.val().wins || 0 : 0;
+      playerRef.set({
+        name: playerName,
+        wins: currentWins + 1
+      });
+
+      alert("✅ नाम भेजा गया: " + playerName);
+      document.getElementById("name-input-wrapper").style.display = "none";
+    }).catch(error => {
+      console.error("❌ Firebase error:", error);
+      alert("❌ नाम भेजने में दिक्कत आई");
     });
-}
-</script>
+  }
 
+  // ✅ Input से नाम उठाकर भेजने वाला function
+  function submitScoreFromInput() {
+    const input = document.getElementById("player-name-input");
+    const rawName = input.value.trim();
+
+    if (!rawName) {
+      alert("⚠️ कृपया नाम भरें");
+      return;
+    }
+
+    submitScore(rawName); // 🔄 रॉ नाम भेजा जाएगा, लेकिन अंदर format हो जाएगा
+  }
+</script>
 <!-- ✅ Debug log viewer -->
 <div id="debug-log" style="background:#111; color:#0f0; font-family:monospace; font-size:14px; padding:10px; margin:10px; max-height:200px; overflow:auto;">
   <strong>📋 Debug Console:</strong><br>
@@ -239,5 +276,5 @@ function submitScore(name) {
 </script>
 
 </body>
-</html>
-
+  </html>
+  
