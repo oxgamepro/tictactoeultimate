@@ -1,5 +1,4 @@
 
-
   // Select DOM Elements
 const gameBoard = document.querySelector('.game-board');
 const statusMessage = document.querySelector('.turn-indicator');
@@ -328,6 +327,7 @@ function makeMove(index, player) {
     board[index] = player;
 
     const cell = gameBoard.querySelector(`[data-index='${index}']`);
+    cell.setAttribute('translate', 'no');
     cell.textContent = player;
 
     // dynamic font size सेट करें
@@ -379,23 +379,20 @@ function makeMove(index, player) {
   winCount++;
   statusMessage.textContent = 'You win!';
   playAgainBtn.style.display = 'block';
+const gameLevel = localStorage.getItem('selectedGameLevel');
+if (gameLevel === 'God') {
+  setTimeout(() => {
+    const playerName = prompt("🔥 You defeated God AI! Enter your name:");
 
-  // ✅ सिर्फ God level जीत पर नाम पूछो और submit करो
-  const gameLevel = localStorage.getItem('selectedGameLevel');
-  if (gameLevel && gameLevel.toLowerCase() === 'god') {
-    setTimeout(() => {
-      const playerName = prompt("🔥 You defeated God AI! Enter your name:");
-
-      if (playerName && playerName.trim()) {
-        submitScore(playerName.trim());
-      } else {
-        alert("⚠️ Name not submitted.");
-        // Optional: कोई fallback UI दिखाना हो तो करें
-        const nameBox = document.getElementById('name-input-wrapper');
-        if (nameBox) nameBox.style.display = 'block';
-      }
-    }, 500);
-  }
+    if (playerName && playerName.trim()) {
+      submitScore(playerName.trim());
+    } else {
+      // ⬇️ Fallback UI दिखाएं
+      const nameBox = document.getElementById('name-input-wrapper');
+      if (nameBox) nameBox.style.display = 'block';
+    }
+  }, 500);
+}
 
 } else {
   lossCount++;
