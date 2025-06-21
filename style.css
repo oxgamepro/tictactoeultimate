@@ -430,6 +430,8 @@ padding-top:1vh;
   top:-6.3vh ;
   
 }
+  
+
 .footer {
   margin-bottom: 0.1vh;
   display: flex;
@@ -448,3 +450,10 @@ footer button {
 
 
 
+.rank-icon {
+  font-size: 3vw; /* ये छोटा कर देगा नंबर और icon का size */
+  
+  margin-right: 0.2vw; /* नाम से थोड़ा gap देने के लिए */
+  color: #888; /* हलका grey, आप बदल भी सकते हैं */white-space: nowrap; /* ताकि लाइन ब्रेक ना हो */
+  display: inline-block;
+    }
