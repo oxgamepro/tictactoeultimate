@@ -7,7 +7,6 @@
   <meta name="keywords" content="OX Game, OX Game Pro, Tic Tac Toe, God AI, Online Game, Play OX Game, Brain Game">
   <meta name="author"  content="GodLevel Team">
   <meta name="robots" content="index, follow">
-  <meta name="google" content="notranslate">
   <title>OX Game Pro</title>
 
   <link rel="icon" href="/icon.png" type="image/png" sizes="32x32">
@@ -34,7 +33,17 @@
   </script>
 
   <style>
-    
+    .leaderboard-title {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .leaderboard div {
+      cursor: pointer;
+      color: blue;
+      
+    }
+
     #player-details {
       margin-top: 15px;
       font-weight: bold;
@@ -43,13 +52,50 @@
       width: fit-content;
     }
   </style>
+  <!-- Firebase SDKs (compat versions, no module needed) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+<style>
+  .leaderboard a.glow {
+    color: #004CDC; /* केवल Rank 1 वाला नाम गोल्ड होगा */
+    animation: glow-animation 1.5s infinite alternate;
+  }
+
+  @keyframes glow-animation {
+    0% {
+      text-shadow: 0 0 5px #ffd700, 0 0 10px #ffcc00;
+    }
+    100% {
+      text-shadow: 0 0 10px #fff700, 0 0 20px #ffaa00;
+    }
+  }
+</style>
+<style>
+  .leaderboard li {
+    display: flex;
+    align-items: center;
+    gap: 0.1vw;
+    margin-bottom: 1vw;
+  }
+
+  .leaderboard li a {
+    display: inline-block;
+    max-width: 95;             /* यहां आप चाहे तो 180, 200 भी रख सकते हैं */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+  }
+</style>
 </head>
 <body>
   <div class="container">
 
     <!-- Header -->
     <header>
-      <h1 class="text-3d-wrapper">
+      <h1 translate="no" class="text-3d-wrapper">
         <span class="text-3d">OX Game Pro</span>
       </h1>
     </header>
@@ -79,7 +125,7 @@
 
       <!-- Right Section with LIVE Leaderboard -->
       <aside class="winners-section" aria-label="GOD MODE Leaderboard">
-        <h2><span aria-hidden="true">🔥</span> GOD MODE Leaderboard <span aria-hidden="true">🏆</span></h2>
+        <h2 translate="no"><span aria-hidden="true">🔥</span> GOD MODE Leaderboard <span aria-hidden="true">🏆</span></h2>
   
         <ol class="leaderboard"></ol>
         <div id="player-details"></div>
@@ -100,65 +146,68 @@
 
   <!-- Scripts -->
 <script src="script.js"></script>
-<script src="script21.js"></script>
 
-<script>document.addEventListener("DOMContentLoaded", () => {
-  
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbxSgfpQKiTksf5SWThMr-BVIPicXQ_G0ZfkfcWdVyF5QIdsWsZCpH52Qv8djtK4ID4i/exec';
 
-  async function fetchLeaderboard() {
-    try {
-      const response = await fetch(scriptURL);
-      const data = await response.json(); // [["1", "Rahul", 5], ...]
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBeGU1zEnmYmj2AM-IGG--5RHDtrzplsWE",
+    authDomain: "leaderboard-15c73.firebaseapp.com",
+    databaseURL: "https://leaderboard-15c73-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "leaderboard-15c73",
+    storageBucket: "leaderboard-15c73.appspot.com",
+    messagingSenderId: "981645460996",
+    appId: "1:981645460996:web:a33c923a13df74ed7b9751"
+  };
 
-      const leaderboardDiv = document.querySelector('.leaderboard');
-      leaderboardDiv.innerHTML = "";
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
 
-      data.forEach(entry => {
-        const [rank, name, wins] = entry;
+  const rankIcons = ["🏆", "🎖️", "🏅", "🌟", "🌟", "⭐", "⭐", "⭐", "⭐", "⭐"];
 
-const nameDiv = document.createElement("div");
-  nameDiv.textContent = `${rank}. ${name}`;  // 👈 अब रैंक और नाम दोनों दिखेंगे
+  function loadLeaderboard() {
+  db.ref("scores").once("value").then(snapshot => {
+    const data = snapshot.val();
+    if (!data) return;
 
-  nameDiv.addEventListener("click", () => {
-    showPlayerDetails(rank, name, wins);
+    const list = Object.values(data);
+    list.sort((a, b) => b.wins - a.wins);
+
+    const ol = document.querySelector(".leaderboard");
+    ol.innerHTML = "";
+
+    list.forEach((player, index) => {
+      const rank = index + 1;
+      const icon = rankIcons[index] || "";
+      const li = document.createElement("li");
+
+      // ✅ Top 10: Only emoji | 11 and below: Only number
+      const displayText = index < 10 ? `${icon}` : `${rank}`;
+
+      li.innerHTML = `
+        <span class="rank-icon">${displayText}</span> 
+        <a
+          class="${rank === 1 ? 'glow' : ''}"
+          onclick="showPlayerDetails('${player.name}', ${rank}, '${icon}', ${player.wins})">
+          ${player.name}
+        </a>
+      `;
+
+      ol.appendChild(li);
+    });
   });
+}
 
-        leaderboardDiv.appendChild(nameDiv);
-      });
-    } catch (error) {
-      console.error("Error loading leaderboard:", error);
-      document.querySelector('.leaderboard').innerText = "Unable to load leaderboard.";
-    }
-  }
+window.showPlayerDetails = function (name, rank, icon, wins) {
+  const detailDiv = document.getElementById("player-details");
+  detailDiv.innerHTML = `
+    <hr>
+    <p><strong>Rank:</strong> ${rank} ${icon}</p>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Wins:</strong> ${wins}</p>
+  `;
+};
 
-  function showPlayerDetails(rank, name, wins) {
-    const detailsDiv = document.getElementById("player-details");
-    detailsDiv.innerHTML = `
-      <strong>Rank:</strong> ${rank}<br>
-      <strong>Name:</strong> ${name}<br>
-      <strong>Wins:</strong> ${wins}
-    `;
-  }
-
-  // 🆕 Add player name to leaderboard
-  function submitScore(name) {
-    fetch(scriptURL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: name })
-    })
-    .then(res => res.text())
-    .then(res => {
-      console.log("Submitted:", res);
-      fetchLeaderboard(); // Refresh leaderboard
-    })
-    .catch(err => console.error("Error submitting score:", err));
-  }
-
-  // Call on page load
-  fetchLeaderboard();
-});
+  window.onload = loadLeaderboard;
 </script>
 </body>
   </html>
