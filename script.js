@@ -1,10 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Redirect function
   const redirectPage = (targetPage) => {
     window.location.href = targetPage;
   };
 
-  // Generic selection handler
   function handleSelection(buttons, storageKey, applyClass = true) {
     buttons.forEach(button => {
       button.addEventListener('click', () => {
@@ -17,25 +15,31 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Load saved selection only where class needs to be shown
-  function loadSavedSelection(buttons, storageKey) {
+  function loadSavedSelection(buttons, storageKey, defaultIndex = 0) {
     const savedValue = localStorage.getItem(storageKey);
+    let selectedButton = null;
+
     if (savedValue) {
-      const selectedButton = Array.from(buttons).find(
+      selectedButton = Array.from(buttons).find(
         btn => btn.textContent.trim() === savedValue
       );
-      if (selectedButton) {
-        selectedButton.classList.add('selected');
-      }
+    }
+
+    // अगर कुछ भी select नहीं मिला तो defaultIndex वाला select करो
+    if (!selectedButton && buttons[defaultIndex]) {
+      selectedButton = buttons[defaultIndex];
+      localStorage.setItem(storageKey, selectedButton.textContent.trim());
+    }
+
+    if (selectedButton) {
+      selectedButton.classList.add('selected');
     }
   }
 
-  // Board Size Buttons - show selected class
   const boardButtons = document.querySelectorAll('.board-size');
   handleSelection(boardButtons, 'selectedBoardSize', true);
-  loadSavedSelection(boardButtons, 'selectedBoardSize');
+  loadSavedSelection(boardButtons, 'selectedBoardSize', 0); // default index = 0 (3x3)
 
-  // Game Mode Buttons - save value only and redirect accordingly
   const modeButtons = document.querySelectorAll('.mode-btn');
   modeButtons.forEach(button => {
     button.addEventListener("click", function () {
