@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<// Copyright (c) 2025 ANKIT THAKUR
+// All Rights Reserved.
+// Unauthorized copying of this file, via any medium is strictly prohibited.>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -11,9 +14,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Days+One&family=Amaranth:wght@700&family=Autour+One&display=swap" rel="stylesheet">
   <link href="https://fonts.cdnfonts.com/css/chunkfive" rel="stylesheet">
 <!-- CSS -->
-<link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="style2.css">
-<link rel="stylesheet" href="style3.css">
+<link rel="stylesheet" href="style.css">
+
 
 
   <style>
@@ -31,14 +34,9 @@
 
 <body>
   <div class="container">
-    <header>
-      <h1 translate="no" class="text-3d-wrapper">
-        <span class="text-3d">OX Game Pro</span>
-      </h1>
-    </header>
-<div class="menu-bar">
-  <a href="index.html"
-<button class="home-btn" aria-label="Home">
+    <div class="head">
+        <a href="index.html"
+<button  class="home-btn" aria-label="Home">
   <span class="emoji primary" role="img" aria-label="Home Emoji">🏠</span>
   <span class="emoji backup" aria-hidden="true">
     <!-- SVG as fallback -->
@@ -53,19 +51,29 @@
       <rect x="44" y="10" width="4" height="8" fill="#B71C1C"/>
     </svg>
   </span>
-</button>
-</a>
-  <button class="btn-new">New</button>
-      <button class="undo-btn">
-        <span id= "undo-btn" class="emoji primary">⏰</span><span class="emoji backup">↩️</span>
-      </button>
-      <button id="hint-btn">
+</button> </a>
+  <button class="btn-new">♻</button>
+ <button id="hint-btn">
         <span class="emoji primary">💡</span><span class="emoji backup">❓</span>
       </button>
-      <button class="btn-menu">
-        <span class="emoji primary">☰</span><span class="emoji backup">≡</span>
+     <button class="undo-btn">
+        <span id= "undo-btn" class="emoji primary">⏰</span><span class="emoji backup">↩️</span>
       </button>
-    </div>
+  <button  class="menu-btn">
+        ☰
+      </button>
+
+<!-- Sidebar -->
+<div id="sidebar" class="sidebar">
+  <ul>
+    <li>🔐 Login</li>
+  <li>🎮 Game Tricks</li> <li>⚙️ Settings</li>
+    <li>❓ Help</li>
+  </ul>
+</div>
+      
+</div>
+
 
 
      <div class="score-bar">
@@ -274,7 +282,29 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 })();
 </script>
+<script>
+  const menuBtn = document.querySelector(".menu-btn");
+  const sidebar = document.querySelector("#sidebar");
 
+  // 1. Menu पर क्लिक → Toggle open class
+  menuBtn.addEventListener("click", function (e) {
+    e.stopPropagation(); // ताकि नीचे वाला event ना चले
+    sidebar.classList.toggle("open");
+  });
+
+  // 2. Sidebar के अंदर क्लिक किया तो भी बंद हो जाए (optional)
+  sidebar.addEventListener("click", function (e) {
+    if (e.target.tagName === "LI") {
+      sidebar.classList.remove("open");
+    }
+    e.stopPropagation(); // अंदर क्लिक करने पर body वाला इवेंट ना चले
+  });
+
+  // 3. Body पर कहीं भी क्लिक किया तो sidebar बंद
+  document.body.addEventListener("click", function () {
+    sidebar.classList.remove("open");
+  });
+</script>
 </body>
   </html>
-  
+        
