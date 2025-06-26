@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.godlevel.fun/sitemap.xml
+Sitemap: https://www.godlevel.fun/sitemap.txt
