@@ -1,42 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="OX Game Pro पर God AI के खिलाफ ऑनलाइन OX गेम खेलें। अपने दिमाग को चैलेंज करें और लीडरबोर्ड में टॉप पर पहुंचें। अभी खेलें!">
-  <meta name="keywords" content="OX Game, OX Game Pro, Tic Tac Toe, God AI, Online Game, Play OX Game, Brain Game">
-  <meta name="author"  content="GodLevel Team">
-  <meta name="robots" content="index, follow">
-  <title>OX Game Pro</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link rel="icon" href="/icon.png" type="image/png" sizes="32x32">
-  <link rel="shortcut icon" href="/icon.png" type="image/png">
-  <link rel="apple-touch-icon" href="/icon.png">
+  <title>Tic Tac Toe 🎮 God AI को हराएं | OX Game Pro 🏆</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="OX Game Pro पर खेलें God AI के खिलाफ Tic Tac Toe। अपना दिमाग चैलेंज करें और लीडरबोर्ड में टॉप पर पहुंचें। अभी खेलें!">
+  <meta name="keywords" content="Tic Tac Toe, OX Game, OX Game Pro, God AI, Online Game, Brain Game, Multiplayer, Leaderboard Game">
+  <meta name="author" content="GodLevel Team">
+  <meta name="robots" content="index, follow" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://www.godlevel.fun/" />
+
+  <!-- Open Graph Tags (for social sharing) -->
+  <meta property="og:title" content="Tic Tac Toe 🎮 God AI को हराएं | OX Game Pro 🏆" />
+  <meta property="og:description" content="God AI को हराएं, रैंक पाएं और लीडरबोर्ड में छा जाएं। OX Game Pro पर अभी खेलें!" />
+  <meta property="og:image" content="https://www.godlevel.fun/icon.png" />
+  <meta property="og:url" content="https://www.godlevel.fun/" />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="/icon.png" type="image/png" sizes="32x32" />
+  <link rel="shortcut icon" href="/icon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/icon.png" />
   <meta name="theme-color" content="#ffffff" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Days+One&family=Amaranth:wght@700&family=Autour+One&display=swap" rel="stylesheet">
-  <!-- Head Section में Google Font लोड करें -->
-<link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Days+One&family=Amaranth:wght@700&family=Autour+One&family=Bangers&display=swap" rel="stylesheet" />
+  <link href="https://fonts.cdnfonts.com/css/chunkfive" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style3.css" />
 
 
-  <link href="https://fonts.cdnfonts.com/css/chunkfive" rel="stylesheet">
-
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="style3.css">
-  
-  
-
-  <!-- Google tag (gtag.js) -->
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-P6BPV52JFE"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-P6BPV52JFE');
   </script>
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+  <!-- Custom Styles -->
   <style>
     .leaderboard-title {
       font-size: 20px;
@@ -46,7 +60,6 @@
     .leaderboard div {
       cursor: pointer;
       color: blue;
-      
     }
 
     #player-details {
@@ -56,44 +69,39 @@
       padding: 10px;
       width: fit-content;
     }
+
+    .leaderboard a.glow {
+      color: #004CDC;
+      animation: glow-animation 1.5s infinite alternate;
+    }
+
+    @keyframes glow-animation {
+      0% {
+        text-shadow: 0 0 5px #ffd700, 0 0 10px #ffcc00;
+      }
+      100% {
+        text-shadow: 0 0 10px #fff700, 0 0 20px #ffaa00;
+      }
+    }
+
+    .leaderboard li {
+      display: flex;
+      align-items: center;
+      gap: 0.1vw;
+      margin-bottom: 1vw;
+    }
+
+    .leaderboard li a {
+      display: inline-block;
+      max-width: 180px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-decoration: none;
+      color: inherit;
+      font-weight: bold;
+    }
   </style>
-  <!-- Firebase SDKs (compat versions, no module needed) -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-<style>
-  .leaderboard a.glow {
-    color: #004CDC; /* केवल Rank 1 वाला नाम गोल्ड होगा */
-    animation: glow-animation 1.5s infinite alternate;
-  }
-
-  @keyframes glow-animation {
-    0% {
-      text-shadow: 0 0 5px #ffd700, 0 0 10px #ffcc00;
-    }
-    100% {
-      text-shadow: 0 0 10px #fff700, 0 0 20px #ffaa00;
-    }
-  }
-</style>
-<style>
-  .leaderboard li {
-    display: flex;
-    align-items: center;
-    gap: 0.1vw;
-    margin-bottom: 1vw;
-  }
-
-  .leaderboard li a {
-    display: inline-block;
-    max-width: 95;             /* यहां आप चाहे तो 180, 200 भी रख सकते हैं */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-decoration: none;
-    color: inherit;
-    font-weight: bold;
-  }
-</style>
 </head>
 <body>
   <div class="container">
