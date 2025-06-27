@@ -11,7 +11,7 @@ const aiOptions = document.querySelector('.ai-options');
 const humanOptions = document.querySelector('.human-options');
 const aiEmoji = document.querySelector('.ai-emoji');
 const humanEmoji = document.querySelector('.human-emoji'); 
-
+  
 
 document.querySelectorAll('.cell').forEach(cell => {
   cell.style.margin = cellSpacing;
@@ -35,6 +35,8 @@ newBtn.addEventListener('click', () => {
 window.addEventListener('DOMContentLoaded', () => {
   const hintBtn = document.getElementById('hint-btn');
   hintBtn.addEventListener('click', showHint);
+
+
 
 
 
@@ -214,6 +216,7 @@ let lossCount = 0;
 
 let thinkingCells = [];
 let moveHistory = [];
+let maxMovesToShow = 5;
 let lastPlayerMoveIndex = null;
 let lastAIMoveIndex = null;
 
@@ -259,6 +262,10 @@ function createBoard(size, withClick = false) {
 
   return board;
 }
+
+
+
+
 function updateScoreboard() {
   humanScoreSpan.textContent = winCount;
   aiScoreSpan.textContent = lossCount;
@@ -319,9 +326,60 @@ function setFontSizeBasedOnCell(cell) {
 }
 
 
+function getMaxMovesToShow() {
+  const boardSize = Math.sqrt(board.length);
+  return boardSize === 3 ? 6 :
+         boardSize === 4 ? 10 :
+         boardSize === 5 ? 17 :
+         Math.floor((boardSize * boardSize) / 2);
+}
 
 
-// ==================== Make Move Function ===================
+function shouldDelayAIMove() {
+  const gameLevel = localStorage.getItem('selectedGameLevel');
+  if (gameLevel !== 'God') return false;
+
+  return Array.isArray(moveHistory) && moveHistory.length >= getMaxMovesToShow();
+}
+
+
+function handleGodLevelFadeEffect(index, player) {
+  if (!Array.isArray(moveHistory)) moveHistory = [];
+
+  const maxMovesToShow = getMaxMovesToShow();
+  moveHistory.push({ index, player });
+
+  // 🔄 पहले किसी भी हल्की चाल को हटाएं
+  document.querySelectorAll('.will-remove').forEach(cell => {
+    cell.classList.remove('will-remove');
+    cell.classList.remove('faded');
+  });
+
+  // 🟡 नई चाल को हल्का करने के लिए तैयार करें
+  if (moveHistory.length === maxMovesToShow) {
+    const fadedMove = moveHistory[0];
+    const fadedCell = gameBoard.querySelector(`[data-index="${fadedMove.index}"]`);
+    if (fadedCell) fadedCell.classList.add('will-remove', 'faded');
+  }
+
+  // 🔴 बहुत ज़्यादा चालें हो गईं, सबसे पुरानी चाल को हटाएं
+  if (moveHistory.length > maxMovesToShow) {
+    const removed = moveHistory.shift();
+    const cellToRemove = gameBoard.querySelector(`[data-index="${removed.index}"]`);
+    if (cellToRemove) {
+      board[removed.index] = null;
+      cellToRemove.textContent = '';
+      cellToRemove.classList.remove('x', 'o', 'will-remove', 'faded');
+    }
+
+    const nextToFade = moveHistory[0];
+    if (nextToFade) {
+      const nextFadeCell = gameBoard.querySelector(`[data-index="${nextToFade.index}"]`);
+      if (nextFadeCell) nextFadeCell.classList.add('will-remove', 'faded');
+    }
+  }
+}
+
 function makeMove(index, player) {
   if (!board[index]) {
     board[index] = player;
@@ -330,10 +388,8 @@ function makeMove(index, player) {
     cell.setAttribute('translate', 'no');
     cell.textContent = player;
 
-    // dynamic font size सेट करें
     setFontSizeBasedOnCell(cell);
 
-    // X और O के लिए रंग जोड़ें
     if (player === 'X') {
       cell.classList.add('x');
       cell.classList.remove('o');
@@ -342,7 +398,6 @@ function makeMove(index, player) {
       cell.classList.remove('x');
     }
 
-    // AI move पर vibrate animation
     if (player === 'O') {
       cell.classList.add('ai-move-vibrate');
       setTimeout(() => {
@@ -350,20 +405,22 @@ function makeMove(index, player) {
       }, 300);
     }
 
-    // Move history में जोड़ें
-    moveHistory.push({ index, player });
+    // 🎯 अलग function से God level effect लागू करें
+    const gameLevel = localStorage.getItem('selectedGameLevel');
+    if (gameLevel === 'God') {
+      handleGodLevelFadeEffect(index, player);
+    }
 
-    // Track last move
+    // 🔄 last move track करें
     if (player === 'X') {
       lastPlayerMoveIndex = index;
     } else {
       lastAIMoveIndex = index;
     }
 
-    // Highlight last move
     highlightLastMove(player === 'X' ? 'player' : 'ai');
 
-    // Check for Win
+    // 🏁 जीत की स्थिति
     if (checkWin(board, player)) {
       gameOver = true;
 
@@ -376,33 +433,32 @@ function makeMove(index, player) {
       highlightLastMove();
 
       if (player === 'X') {
-  winCount++;
-  statusMessage.textContent = 'You win!';
-  playAgainBtn.style.display = 'block';
-const gameLevel = localStorage.getItem('selectedGameLevel');
-if (gameLevel === 'God') {
-  setTimeout(() => {
-    const playerName = prompt("🔥 You defeated God AI! Enter your name:");
+        winCount++;
+        statusMessage.textContent = 'You win!';
+        playAgainBtn.style.display = 'block';
 
-    if (playerName && playerName.trim()) {
-      submitScore(playerName.trim());
-    } else {
-      // ⬇️ Fallback UI दिखाएं
-      const nameBox = document.getElementById('name-input-wrapper');
-      if (nameBox) nameBox.style.display = 'block';
-    }
-  }, 500);
-}
+        if (gameLevel === 'God') {
+          setTimeout(() => {
+            const playerName = prompt("🔥 You defeated God AI! Enter your name:");
 
-} else {
-  lossCount++;
-  statusMessage.textContent = 'AI wins!';
-  tryAgainBtn.style.display = 'block';
-}
+            if (playerName && playerName.trim()) {
+              submitScore(playerName.trim());
+            } else {
+              const nameBox = document.getElementById('name-input-wrapper');
+              if (nameBox) nameBox.style.display = 'block';
+            }
+          }, 500);
+        }
+      } else {
+        lossCount++;
+        statusMessage.textContent = 'AI wins!';
+        tryAgainBtn.style.display = 'block';
+      }
+
       updateScoreboard();
     }
 
-    // Check for Draw
+    // 🤝 ड्रा स्थिति
     else if (board.every(cell => cell !== null)) {
       gameOver = true;
       statusMessage.textContent = 'Draw!';
@@ -413,7 +469,7 @@ if (gameLevel === 'God') {
       highlightLastMove();
     }
 
-    // Switch turn
+    // 🔁 अगली बारी सेट करें
     else {
       currentPlayer = (player === 'X') ? 'O' : 'X';
       statusMessage.textContent = (currentPlayer === 'X') ? 'Your Turn' : 'AI is thinking...';
@@ -595,15 +651,16 @@ function highlightWin(player) {
 //reset gameboard only
 function resetGameBoardOnly() {
   // सिर्फ board खाली करना है
- 
+
   board = Array(boardSize * boardSize).fill(null);
   gameOver = false;
   currentPlayer = 'X';
+  moveHistory = [];
 
   // सभी सेल खाली करो और क्लास हटाओ
   document.querySelectorAll('.cell').forEach(cell => {
     cell.textContent = '';
-    cell.classList.remove('win-player', 'win-ai');
+    cell.classList.remove('win-player', 'win-ai', 'will-remove'); // ✅ यह लाइन अपडेट की गई
   });
 
   // स्टेटस मैसेज रिसेट
@@ -620,27 +677,244 @@ function resetGameBoardOnly() {
     line.style.width = '0px';
   }
 }
+function detectForkThreat(player) {
+  const size = Math.sqrt(board.length);
+  const winLines = generateWinLines(size);
+  const required = getRequiredToWin(size);
+
+  // सभी खाली cells पर मानकर simulate करें
+  const threats = [];
+
+  for (let i = 0; i < board.length; i++) {
+    if (board[i] !== null) continue;
+
+    board[i] = player;
+    let threatCount = 0;
+
+    for (let line of winLines) {
+      const values = line.map(index => board[index]);
+      const countPlayer = values.filter(v => v === player).length;
+      const countEmpty = values.filter(v => v === null).length;
+
+      if (countPlayer === required - 1 && countEmpty === 1) {
+        threatCount++;
+      }
+    }
+
+    board[i] = null;
+
+    if (threatCount >= 2) {
+      threats.push(i);
+    }
+  }
+
+  return threats.length ? threats[0] : null;
+}
+
+function smartBestMove() {
+  const forkThreat = detectForkThreat('X');
+  if (forkThreat !== null) return forkThreat;
+
+  return bestMove();  // आपका minimax वाला function
+}
 
 function aiMove() {
-  let index;
   try {
-    if (gameLevel === 'Easy') {
-      index = hybridPlannedLossMove();
-    } else if (gameLevel === 'Medium') {
-      index = (Math.random() < 0.3) ? hybridPlannedLossMove() : randomMove('Medium');
-    } else if (gameLevel === 'Hard') {
-      index = (Math.random() < 0.5) ? bestMove() : randomMove('Hard');
-    } else if (gameLevel === 'God') {
-      index = (Math.random() < 0.99) ? bestMove() : randomMove('God');
+    const executeMove = () => {
+      let index = null;
+
+      if (gameLevel === 'Easy') {
+        index = hybridPlannedLossMove();
+      } else if (gameLevel === 'Medium') {
+        index = (Math.random() < 0.25) ? bestMove() : smartRandomMove('Medium');
+      } else if (gameLevel === 'Hard') {
+        index = (Math.random() < 0.5) ? bestMove() : smartRandomMove('Hard');
+      } else if (gameLevel === 'God') {
+        index = (Math.random() < 0.99) ? bestMove() : smartRandomMove('God');
+      }
+
+      if (index !== null) {
+        makeMove(index, 'O');
+      }
+    };
+
+    const gameLevel = localStorage.getItem('selectedGameLevel');
+    const moveCount = Array.isArray(moveHistory) ? moveHistory.length : 0;
+
+    if (gameLevel === 'God') {
+      const delay = Math.min(300 + moveCount * 200, 1000);
+      setTimeout(executeMove, delay);
+    } else {
+      executeMove();
     }
 
-    if (index !== null) {
-      makeMove(index, 'O');
-    }
   } catch (error) {
     console.error("AI move error:", error);
   }
 }
+
+function smartRandomMove(level) {
+  const available = board.map((v, i) => v === null ? i : null).filter(i => i !== null);
+  if (!available.length) return null;
+
+  // Try to help player in Easy mode
+  if (level === 'Easy' && Math.random() < 0.05) {
+    return getHelpingMove('X') || getRandomItem(available);
+  }
+
+  // Smart blocking logic for all levels
+  const blockMove = getBlockingMove('X');
+  if (blockMove !== null) return blockMove;
+const forkThreat = detectForkThreat('X');
+if (forkThreat !== null) return forkThreat;
+
+  return getRandomItem(available);
+}
+
+
+function getBlockingMove5x5(player) {
+  const size = 5;
+  const required = 4;
+  const winLines = generateWinLines(size);
+
+  const available = board
+    .map((v, i) => v === null ? i : null)
+    .filter(i => i !== null);
+
+  // Immediate win block
+  for (let i of available) {
+    board[i] = player;
+    if (checkWin(board, player)) {
+      board[i] = null;
+      return i;
+    }
+
+    if (hasThreatOf2orMore(board, player, required)) {
+      board[i] = null;
+      return i;
+    }
+
+    board[i] = null;
+  }
+
+  // Check double threats
+  let doubleThreats = [];
+  for (let i of available) {
+    board[i] = player;
+    const chances = countPlayerWinningChances(player, 2);
+    board[i] = null;
+    if (chances >= 2) doubleThreats.push(i);
+  }
+
+  if (doubleThreats.length) return doubleThreats[0];
+
+  return null;
+}
+
+function hasThreatOf2orMore(board, player, required) {
+  const size = Math.sqrt(board.length);
+  const winLines = generateWinLines(size);
+
+  for (let line of winLines) {
+    const values = line.map(idx => board[idx]);
+    const countPlayer = values.filter(v => v === player).length;
+    const countEmpty = values.filter(v => v === null).length;
+
+    if (countPlayer === required - 2 && countEmpty >= 2) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+
+function getBlockingMove7x7(player) {
+  const size = 7;
+  const required = 5;
+  const winLines = generateWinLines(size);
+
+  const available = board
+    .map((v, i) => v === null ? i : null)
+    .filter(i => i !== null);
+
+  for (let i of available) {
+    board[i] = player;
+    if (checkWin(board, player)) {
+      board[i] = null;
+      return i;
+    }
+
+    if (hasThreatOf3orMore(board, player, required)) {
+      board[i] = null;
+      return i;
+    }
+
+    board[i] = null;
+  }
+
+  let doubleThreats = [];
+  for (let i of available) {
+    board[i] = player;
+    const chances = countPlayerWinningChances(player, 2);
+    board[i] = null;
+    if (chances >= 2) doubleThreats.push(i);
+  }
+
+  if (doubleThreats.length) return doubleThreats[0];
+
+  return null;
+}
+
+function hasThreatOf3orMore(board, player, required) {
+  const size = Math.sqrt(board.length);
+  const winLines = generateWinLines(size);
+
+  for (let line of winLines) {
+    const values = line.map(idx => board[idx]);
+    const countPlayer = values.filter(v => v === player).length;
+    const countEmpty = values.filter(v => v === null).length;
+
+    if (countPlayer >= required - 2 && countEmpty > 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function getBlockingMove(player) {
+  if (boardSize === 7) {
+    return getBlockingMove7x7(player);
+  } else if (boardSize === 5) {
+    return getBlockingMove5x5(player);
+  }
+
+  const available = board.map((v, i) => v === null ? i : null).filter(i => i !== null);
+
+  for (let i of available) {
+    board[i] = player;
+    if (checkWin(board, player)) {
+      board[i] = null;
+      return i;
+    }
+    board[i] = null;
+  }
+
+  let doubleThreats = [];
+  for (let i of available) {
+    board[i] = player;
+    const chances = countPlayerWinningChances(player, 2);
+    board[i] = null;
+    if (chances >= 2) doubleThreats.push(i);
+  }
+
+  if (doubleThreats.length) return doubleThreats[0];
+
+  return null;
+}
+
+
+
 
 function hybridPlannedLossMove() {
   const available = board.map((v, i) => v === null ? i : null).filter(i => i !== null);
@@ -648,12 +922,10 @@ function hybridPlannedLossMove() {
 
   const moveCount = board.filter(cell => cell !== null).length;
 
-  // Step 1: Early randomness
   if (moveCount <= 2 && Math.random() < 0.1) {
     return getRandomItem(available);
   }
 
-  // Step 2: Try to allow player to win in future (simulate)
   const potentialMoves = [];
 
   for (let move of shuffleArray(available)) {
@@ -670,8 +942,20 @@ function hybridPlannedLossMove() {
     return getRandomItem(potentialMoves);
   }
 
-  // Step 3: If no good planned-losing move, return random
   return getRandomItem(available);
+}
+
+function getHelpingMove(player) {
+  const available = board.map((v, i) => v === null ? i : null).filter(i => i !== null);
+  for (let i of available) {
+    board[i] = player;
+    if (checkWin(board, player)) {
+      board[i] = null;
+      return i;
+    }
+    board[i] = null;
+  }
+  return null;
 }
 
 function countPlayerWinningChances(player, depthLimit) {
@@ -697,81 +981,6 @@ function countPlayerWinningChances(player, depthLimit) {
   return count;
 }
 
-function randomMove(level) {
-  const available = board.map((v, i) => v === null ? i : null).filter(i => i !== null);
-  if (!available.length) return null;
-
-  // 5% chance Easy mode helps the player win
-  if (level === 'Easy' && Math.random() < 0.05) {
-    return getHelpingMove('X') || getRandomItem(available);
-  }
-
-  // 5% chance Medium mode helps the player win
-  if (level === 'Medium' && Math.random() < 0.02) {
-    return getHelpingMove('X') || getRandomItem(available);
-  }
-
-  const player = 'X';
-  const ai = 'O';
-
-  // Blocking thresholds
-  const blockChances = {
-    'Easy': 0.10,
-    'Medium': 0.35,
-    'Hard': 0.60,
-    'God': 0.99
-  };
-
-  // Try to block player win
-  if (Math.random() < blockChances[level]) {
-    const blockMove = getBlockingMove(player);
-    if (blockMove !== null) return blockMove;
-  }
-
-  // Default random move
-  return getRandomItem(available);
-}
-function getBlockingMove(player) {
-  const available = board.map((v, i) => v === null ? i : null).filter(i => i !== null);
-  for (let i of available) {
-    board[i] = player;
-    if (checkWin(board, player)) {
-      board[i] = null;
-      return i;
-    }
-    board[i] = null;
-  }
-
-  // Check for double threat (fork) – block one
-  let doubleThreats = [];
-  for (let i of available) {
-    board[i] = player;
-    const chances = countPlayerWinningChances(player, 2);
-    board[i] = null;
-    if (chances >= 2) doubleThreats.push(i);
-  }
-
-  if (doubleThreats.length) return doubleThreats[0];
-  return null;
-}
-
-function getHelpingMove(player) {
-  const available = board.map((v, i) => v === null ? i : null).filter(i => i !== null);
-  for (let i of available) {
-    board[i] = player;
-    if (checkWin(board, player)) {
-      board[i] = null;
-      return i;
-    }
-    board[i] = null;
-  }
-  return null;
-}
-
-function getRandomItem(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
 function bestMove() {
   let bestScore = -Infinity;
   let move = null;
@@ -791,34 +1000,6 @@ function bestMove() {
   return move;
 }
 
-// hint दिखाने वाला function
-function showHint() {
-  if (gameOver || currentPlayer !== 'X') return;  // गेम ख़त्म या AI की बारी हो तो hint नहीं दिखाना
-  if (!['Easy', 'Medium', 'Hard'].includes(gameLevel)) return;  // सिर्फ Easy, Medium, Hard के लिए hint
-
-  clearHintHighlight();
-
-  // सबसे पहले मददगार move (win करने वाला), फिर blocking move, फिर bestMove
-  let hintIndex = getHelpingMove('X') || getBlockingMove('X') || bestMove();
-
-  if (hintIndex !== null) {
-    const cell = gameBoard.querySelector(`[data-index='${hintIndex}']`);
-    cell.classList.add('hint-highlight');
-  }
-}
-
-
-// hint highlight हटाने वाला function
-function clearHintHighlight() {
-  document.querySelectorAll('.hint-highlight').forEach(cell => {
-    cell.classList.remove('hint-highlight');
-  });
-}
-
-
-
-
-
 function minimax(newBoard, depth, isMaximizing, depthLimit, alpha = -Infinity, beta = Infinity) {
   if (checkWin(newBoard, 'O')) return 10 - depth;
   if (checkWin(newBoard, 'X')) return depth - 10;
@@ -833,7 +1014,7 @@ function minimax(newBoard, depth, isMaximizing, depthLimit, alpha = -Infinity, b
         newBoard[i] = null;
         bestScore = Math.max(score, bestScore);
         alpha = Math.max(alpha, bestScore);
-        if (beta <= alpha) break;  // **Prune**
+        if (beta <= alpha) break;
       }
     }
     return bestScore;
@@ -846,7 +1027,7 @@ function minimax(newBoard, depth, isMaximizing, depthLimit, alpha = -Infinity, b
         newBoard[i] = null;
         bestScore = Math.min(score, bestScore);
         beta = Math.min(beta, bestScore);
-        if (beta <= alpha) break;  // **Prune**
+        if (beta <= alpha) break;
       }
     }
     return bestScore;
@@ -883,7 +1064,7 @@ function getDepthLimit() {
   }
 }
 
-// Utility functions
+// Utilities
 function getRandomItem(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -901,14 +1082,13 @@ function getRequiredToWin(size) {
   if (size === 3) return 3;
   if (size === 5) return 4;
   if (size === 7) return 5;
-  return 3; // default fallback
+  return 3;
 }
-// Generate winning combinations dynamically
+
 function generateWinLines(size) {
   const lines = [];
   const winLength = size === 3 ? 3 : size === 5 ? 4 : 5;
 
-  // Rows
   for (let r = 0; r < size; r++) {
     for (let c = 0; c <= size - winLength; c++) {
       const row = [];
@@ -919,7 +1099,6 @@ function generateWinLines(size) {
     }
   }
 
-  // Columns
   for (let c = 0; c < size; c++) {
     for (let r = 0; r <= size - winLength; r++) {
       const col = [];
@@ -930,7 +1109,6 @@ function generateWinLines(size) {
     }
   }
 
-  // Diagonal \
   for (let r = 0; r <= size - winLength; r++) {
     for (let c = 0; c <= size - winLength; c++) {
       const diag = [];
@@ -941,7 +1119,6 @@ function generateWinLines(size) {
     }
   }
 
-  // Diagonal /
   for (let r = 0; r <= size - winLength; r++) {
     for (let c = winLength - 1; c < size; c++) {
       const diag = [];
@@ -954,6 +1131,30 @@ function generateWinLines(size) {
 
   return lines;
 }
+// hint दिखाने वाला function
+function showHint() {
+  if (gameOver || currentPlayer !== 'X') return;  // गेम ख़त्म या AI की बारी हो तो hint नहीं दिखाना
+  if (!['Easy', 'Medium', 'Hard'].includes(gameLevel)) return;  // सिर्फ Easy, Medium, Hard के लिए hint
+
+  clearHintHighlight();
+
+  // सबसे पहले मददगार move (win करने वाला), फिर blocking move, फिर bestMove
+  let hintIndex = getHelpingMove('X') || getBlockingMove('X') || bestMove();
+
+  if (hintIndex !== null) {
+    const cell = gameBoard.querySelector(`[data-index='${hintIndex}']`);
+    cell.classList.add('hint-highlight');
+  }
+}
+
+
+// hint highlight हटाने वाला function
+function clearHintHighlight() {
+  document.querySelectorAll('.hint-highlight').forEach(cell => {
+    cell.classList.remove('hint-highlight');
+  });
+}
+
 
 // Button events
 playAgainBtn.addEventListener('click', () => { vibrateDevice(); initGame(); });
