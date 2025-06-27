@@ -506,6 +506,518 @@ align-items: center;
 }
 
 .thinking-highlight {
+
+*{
+  margin: 0vw;
+}
+
+.score-bar {
+  display: flex;
+  justify-content: space-evenly;overflow:visible;
+  
+  margin:2vw;
+  
+  align-items: center;
+  border-radius: 1vw;
+  position: relative;
+  top: 0vh;
+  
+  
+}
+
+.ai-section {
+  overflow:visible;
+  position: relative;
+  height: 7.5vh;
+  width: 45vw;
+  right: 0vw;
+      top: 0vh;
+  padding:2vw;
+  text-align: center;
+  font-size: 8vw !important;
+  background: radial-gradient(circle, #18105CCF 85%,
+  #3A066FD6 100%);
+  box-sizing:border-box;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 0.7vw;
+  border: 0.7vw solid #0C0642CF;
+  font-size: 8vw;
+padding: 0vw;
+border-radius: 0.5vw;
+  
+}
+
+
+
+.human-section {
+  overflow:visible;
+  position: relative;
+  right: 0vw;
+  padding: 0.2vw;
+  height: 7.5vh;
+  width: 45vw;
+      top: 0vh;
+  padding:2vw;
+  text-align: center;
+  font-size: 8vw !important;
+  display: flex;
+  background: radial-gradient(circle, #18105CCF 85%,
+  #3A066FD6 100%);
+  
+  box-sizing:border-box;
+  align-items: center;
+  justify-content: center;
+  
+  border-radius: 0.7vw;
+  border: 0.7vw solid #1a1a3d;
+  font-size: 8vw;
+padding: 0vw;
+border-radius: 0.5vw;
+  
+}
+
+.ai-section, .human-section{
+  display:flex;
+  
+  box-sizing:border-box;
+  
+  
+} 
+
+
+.ai-emoji, .human-emoji {
+  font-size: 10vw;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0vw;
+}
+
+.emoji-name{
+  font-size: 3.9vw;
+  font-weight: bold;
+  color: #000;
+  background-color: #C1C1C3;
+  width: 20vw;
+  max-height: 5.5vh;
+  padding-top: 0.5vw;
+  padding-bottom: 0vw;
+  
+  text-align: center;
+  display: block;
+  
+}
+
+.ai-options, .human-options {
+  position: absolute;
+  background: #FFFFFF;
+  border: 0.5vw solid #aaa;
+  border-radius: 4vw;
+  padding: 0vw;
+  z-index: 7;
+}
+
+.ai-options {
+  top: 8vh;
+  left: 40%;
+  transform: translateX(-50%);
+}
+
+.human-options {
+  top: 8vh;
+  left: 40%;
+  transform: translateX(-40%);
+}
+
+.ai-options span, .human-options span {
+  cursor: pointer;
+  
+  font-size: 5vw;
+  padding: 1vw;
+
+  transition: transform 0.2s;
+}
+
+
+
+.ai-options span:hover,
+.human-options span:hover {
+  transform: scale(1.2);
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+.btn-new {   
+  padding: 0vw;
+  
+  font-size: 10.53vw;
+
+border: 0.5vw solid #CAC20038;
+
+border-radius: 0.5vw;
+background: radial-gradient(circle, #F8FF8E40 60%, 
+#D48EFF40 100%);
+  
+  
+  
+}
+
+.home-btn {
+  
+  border: 0.5vw solid #CAC20038;
+  font-size: 10.53vw;
+  
+padding: 0vw ;
+margin-left:4vw;
+border-radius: 0.5vw;
+background: radial-gradient(circle, #F8FF8E40 60%, 
+#D48EFF40 100%);
+  
+
+}
+
+
+
+.undo-btn {   
+ 
+  padding: 0.65vw;
+  border-radius: 0.5vw;
+  border: 0.5vw solid #CAC20038;
+  font-size: 9.5vw;
+background: radial-gradient(circle, #F8FF8E40 60%, 
+#D48EFF40 100%);
+  
+}
+.head {
+  display: flex;
+  position: relative;
+
+overflow:visible;
+flex-wrap: wrap;
+box-sizing: border-box;
+justify-content: space-between;
+width: 100vw;
+  
+  padding: 2.5vh 0vw 0.5vh 0vw;
+  
+  margin-bottom: 2vh;
+ background-color:
+ #E9E6E6;
+ border-bottom:0.5vw solid #252121;
+  
+}
+
+
+
+.menu-btn {
+ 
+  padding: 0.6vw;
+  margin-right:4vw;
+  border-radius: 0.5vw;
+border: 0.5vw solid #CAC20038;
+
+  background: radial-gradient(circle, #F8FF8E40 60%, 
+#D48EFF40 100%);
+  
+  
+  font-size: 9.5vw;
+  z-index:5;
+}
+
+
+/* Sidebar - initially hidden */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -45vw; /* Hide it to the left */
+  width: 40vw;
+  height: 100vh;
+  background-color: #181818;
+  color: white;
+  transition: left 0.3s ease;
+  padding: 4vh 2vw;
+  z-index: 999;
+}
+
+/* Sidebar active (open) */
+.sidebar.open {
+  left: 0;
+}
+
+/* Menu items */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 3vh 0;
+  font-size: 5vw;
+  border-bottom: 1px solid #444;
+  cursor: pointer;
+}
+
+
+
+
+#hint-btn {   
+  
+  padding: 0.25vw;
+  
+  border-radius: 0.5vw;
+  border: 0.5vw solid #CAC20038;
+  font-size: 10vw;
+background: radial-gradient(circle, #F8FF8E40 60%, 
+#D48EFF40 100%);
+}
+.ai-score {
+  background-color: #C1C1C3;
+  width: 9.5vw;
+  height: 5vh;
+  text-align: center;
+justify-content: center;
+align-items: center;
+border-radius: 0.3vw;
+
+}
+
+.human-score{
+  background-color: #C1C1C3;
+  width: 9.5vw;
+  height: 5vh;
+ text-align: center;
+ justify-content: center;
+align-items: center;
+border-radius: 0.3vw;
+}
+
+.ai-score, .human-score {
+  
+  color: #F400FF;
+}
+
+.game-board {
+  display: grid;
+  width: 60vw;
+  height: 60vw;
+
+  justify-content: center;
+  align-items: center;
+  margin-bottom:4vh;
+  
+}
+
+
+.game-board .cell {
+  width: 100%;
+  height: 100%;
+  background-color: lightgrey;
+  border: 0.5vw solid #000;
+  font-size: 7vw;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+
+
+
+.winning-cell {
+  border: 3px solid red;
+  background-color: rgba(255, 0, 0, 0.3);
+  animation: blink 0.5s linear infinite;
+}
+
+@keyframes blink {
+  0%, 100% { background-color: rgba(255, 0, 0, 0.3); }
+  50% { background-color: rgba(255, 0, 0, 0.6); }
+}
+
+
+.bottom-bar{display: flex;
+justify-content: space-between; /* ya flex-start / center / flex-end */
+align-items: center;
+  margin:4vh 4vw 0vh 4vw;
+}
+
+.cell {
+  
+  border: 1.5v solid #ccc;
+  border-radius: 1vw;
+  background-color: #eee;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+  
+  font-size: 2rem;
+  text-align: center;
+  line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  user-select:none;
+  aspect-ratio: 1;
+}
+
+
+.game-result{
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-weight: bold;
+  color: #4CAF50;
+  margin: 1vw;
+  text-align: center;
+}
+
+.game-result {
+  color: #FF6939C7;
+  cursor: pointer;
+}
+.game-result 
+.game-result:hover {
+  text-decoration: underline;
+}
+
+/* Result Buttons */
+.result-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+
+}
+
+.btn-play,
+.btn-try {
+  background-color: #0076E7;
+  position: relative;
+  top:1.2vw;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 97%;
+  cursor: pointer;
+  height:7.5vw;
+  width: 30vw;
+  transition: background-color 0.3s ease;
+}
+
+.btn-play:hover,
+.btn-try:hover {
+  background-color: #45a049;
+}
+
+
+
+.win-ai {
+  background-color: #d4edda;
+  border: 2px solid #28a745;
+  transition: background-color 0.3s ease;
+}
+
+.win-player {
+  background-color: #CCE5FF;
+  border: 2px solid #007bff;
+  transition: background-color 0.3s ease;
+}
+:root {
+  --mark-size: 4vw;
+}
+.cell {
+  font-size: var(--mark-size);
+}
+.win-line {
+  position: absolute;
+  height: 1vw;
+
+  transform-origin: 0 50%;
+  display: none;
+  z-index: 5;
+}
+.game-wrapper {
+  display: grid;
+  position: relative;
+   text-align: center;
+  justify-content: center;
+  align-items: center;
+  
+  box-sizing: border-box;
+
+  
+}
+.win-line {
+  position: absolute;
+  height: 4px;
+  background-color: gray; /* fallback color */;
+  display: none;
+  transform-origin: left center; /* yahi key point hai */
+  transition: width 0.5s ease;
+/* ये पहले से आपकी .win-line क्लास होगी */
+}
+
+
+/* Human के लिए (X) */
+.win-line-player {
+  background-color: blue;
+}
+
+/* AI के लिए (O) */
+.win-line-ai {
+  background-color: red;
+}
+
+@keyframes growLine {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.win-line {
+  animation: growLine 0.5s ease forwards;
+}
+@keyframes blinkLine {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.win-line {
+  animation: blinkLine 1s infinite;
+}
+
+
+.home-btn svg {
+  color: #2c3e50; /* dark blue-gray */
+  transition: color 0.3s ease;
+}
+
+.home-btn:hover svg {
+  color: #3498db; /* bright blue on hover */
+}
+
+
+.last-move-player {
+  background-color: rgba(0, 16, 200, 0.29) !important;
+  border: 0.3vw solid blue !important;
+}
+
+.last-move-ai {
+  background-color: rgba(200, 0, 0, 0.3) !important;
+  border: 0.3vw solid red !important;
+}
+
+.thinking-highlight {
   animation: pulse 1.5s infinite;
   background-color: rgba(255, 255, 0, 0.12) ;/* हल्का yellow रंग */
   transition: background-color 0.2s;
@@ -550,6 +1062,10 @@ align-items: center;
   font-size: 64px;
 }
 
+.faded {
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+}
 
 
 /* For 3x3 board */
@@ -591,5 +1107,10 @@ button {
 }
 button:hover {
   transform: scale(0.93);
-  box-shadow: 0 5% 10% rgba(0, 0, 0, 0.3);}
-                              
+  box-shadow: 0 5% 10% rgba(0, 0, 0, 0.3);
+}
+
+
+
+
+
