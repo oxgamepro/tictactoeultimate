@@ -38,19 +38,19 @@
 }
 
 .text-3d::before {
-  content: 'OX Game Pro';
+  content: 'Tic Tac Toe';
   position: absolute;
-  transform: translateZ(-40vw) rotateY(-19deg);
+  transform: translateZ(-30vw) rotateY(-15deg);
   color: limegreen;
   z-index: -1;
 }
 
 .text-3d::after {
-  content: 'OX Game Pro';
+  content: 'Tic Tac Toe';
   position: absolute;
   top: 0;
   left: 0;
-  transform: translateZ(-40vw) rotateY(19deg);
+  transform: translateZ(30vw) rotateY(15deg);
   color: #3AE535;
   z-index: -2;
   
