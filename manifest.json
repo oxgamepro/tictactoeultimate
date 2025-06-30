@@ -1,20 +1,24 @@
 {
-"name": "Tic Tac Toe Game ultimate",
-"short_name": "Tic Tac Toe",
-"start_url": "/index.html",
-"display": "standalone",
-"background_color": "#ffffff",
-"theme_color": "#000000",
-"icons": [
-{
-"src": "/icon.png",
-"type": "image/png",
-"sizes": "192x192"
-},
-{
-"src": "/icon.png",
-"type": "image/png",
-"sizes": "512x512"
-}
-]
+  "name": "Tic Tac Toe Game Ultimate",
+  "short_name": "Tic Tac Toe",
+  "lang": "en",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "description": "Play Tic Tac Toe against God AI with unique board sizes and Ultimate mode. Climb the leaderboard and challenge your brain!",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
 }
