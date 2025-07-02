@@ -414,7 +414,7 @@ margin-left:0.5vw;
   font-size: 3vw;
   overflow-y: auto;
   padding:0vw;
-padding-top:1.  7vw;
+padding-top:1.7vw;
   border: 10% solid #000 ;
   background-color: #E3F2FD;
   color:#4050FF;
@@ -425,7 +425,7 @@ padding-top:1.  7vw;
   right: 1vw;
   width: 27vw;
   font-weight:bold ;
-  height: calc(115vw - 29.5vw);
+  height: calc(110vw - 29vw);
   top:-11.5vw ;
   
 }
