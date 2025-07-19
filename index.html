@@ -34,7 +34,7 @@
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="style3.css" />
+    
 
 
   <!-- Google Analytics -->
@@ -106,12 +106,29 @@
 <body>
   <div class="container">
 
-    <!-- Header -->
-    <header>
-      <h1 translate="no" class="text-3d-wrapper">
-        <span class="text-3d">Tic Tac Toe</span>
-      </h1>
-    </header>
+<!-- Header -->
+<header class="header">
+  <h1 translate="no" class="text-3d-wrapper">
+    <img src="icon.png" alt="Logo" class="logo">
+    <span class="text-3d">Tic Tac Toe</span>
+  </h1>
+
+  <div class="threeline">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect y="4" width="24" height="3" fill="black"/>
+      <rect y="11" width="24" height="3" fill="black"/>
+      <rect y="18" width="24" height="3" fill="black"/>
+    </svg>
+  </div>
+</header>
+<!-- Sidebar -->
+<div id="sidebar" class="sidebar">
+  <ul>
+    <li>🔐 Login</li>
+  <li>🎮 Game Tricks</li> <li>⚙️ Settings</li>
+    <li>❓ Help</li>
+  </ul>
+</div>
 
     <!-- Info Message -->
     <p class="info">💥Your name will be registered after winning against God AI⤵️</p>
@@ -145,7 +162,7 @@
       </aside>
 
     </main>
-
+<div id="ads">AdSense</div>
     <!-- Footer -->
     <footer class="footer">
       <nav>
@@ -159,7 +176,22 @@
 
   <!-- Scripts -->
 <script src="script.js"></script>
-
+  <script>
+    // सभी बटन को select करो और loop में apply करो
+    document.querySelectorAll("button").forEach(button => {
+      button.addEventListener("click", () => {
+        // पहले से लगी clicked class को remove करो
+        button.classList.remove("clicked");
+        void button.offsetWidth; // reflow trick
+        // फिर class जोड़ो जिससे छोटा हो
+        button.classList.add("clicked");
+        // 0.5 सेकंड बाद class हटा दो जिससे वापस normal हो
+        setTimeout(() => {
+          button.classList.remove("clicked");
+        }, 200);
+      });
+    });
+  </script>
 
 <script>
   const firebaseConfig = {
@@ -222,5 +254,28 @@ window.showPlayerDetails = function (name, rank, icon, wins) {
 
   window.onload = loadLeaderboard;
 </script>
+<script>
+  const menuBtn = document.querySelector(".threeline");
+  const sidebar = document.querySelector("#sidebar");
+
+  // 1. Menu पर क्लिक → Toggle open class
+  menuBtn.addEventListener("click", function (e) {
+    e.stopPropagation(); // ताकि नीचे वाला event ना चले
+    sidebar.classList.toggle("open");
+  });
+
+  // 2. Sidebar के अंदर क्लिक किया तो भी बंद हो जाए (optional)
+  sidebar.addEventListener("click", function (e) {
+    if (e.target.tagName === "LI") {
+      sidebar.classList.remove("open");
+    }
+    e.stopPropagation(); // अंदर क्लिक करने पर body वाला इवेंट ना चले
+  });
+
+  // 3. Body पर कहीं भी क्लिक किया तो sidebar बंद
+  document.body.addEventListener("click", function () {
+    sidebar.classList.remove("open");
+  });
+</script>
 </body>
-    </html>
+  </html>
