@@ -123,10 +123,18 @@
 </header>
 <!-- Sidebar -->
 <div id="sidebar" class="sidebar">
+  <style>
+    .sidebar ul li a {
+      text-decoration: none;
+      color: inherit;
+    }
+  </style>
   <ul>
     <li>🔐 Login</li>
-  <li>🎮 Game Tricks</li> <li>⚙️ Settings</li>
-    <li>❓ Help</li>
+    <li><a href="game-tricks.html">🎮 Game Tricks</a></li>
+    <li>⚙️ Settings</li>
+    <li><a href="contact-us.html">❓ Help</a></li>
+    <li><a href="faq.html">📄 FAQ</a></li>
   </ul>
 </div>
 
@@ -163,15 +171,35 @@
 
     </main>
 <div id="ads">AdSense</div>
-    <!-- Footer -->
-    <footer class="footer">
-      <nav>
-        <a href="#">About Us</a>
-        <a href="#">Terms & Conditions</a>
-        <a href="#">Privacy</a>
-        <a href="#">Contact Us</a>
-      </nav>
-    </footer>
+<!-- Add this to the top of your body -->
+<body id="top">
+
+<!-- Footer -->
+<footer class="footer">
+  <!-- Pages Section -->
+  <div class="footer-section">
+    <h3>Pages</h3>
+    <a href="about-us.html"><button>About Us</button></a>
+    <a href="contact-us.html"><button>Contact Us</button></a>
+    <a href="privacy-policy.html"><button>Privacy Policy</button></a>
+    <a href="terms-and-conditions.html"><button>Terms & Conditions</button></a>
+  </div>
+
+  <!-- Social Section -->
+  <div class="footer-section1">
+    <h3>Follow Us</h3>
+    <a href="https://youtube.com" target="_blank"><button class="yt">📺 YouTube</button></a>
+    <a href="https://t.me" target="_blank"><button class="telegram">📱 Telegram</button></a>
+  </div>
+
+  <!-- Info Section -->
+  <div class="footer-section info">
+    <h3>Info</h3>
+    <p>© 2025 God Level Tic Tac Toe</p>
+    <p>Designed by Ankit Thakur</p>
+    <a href="#top"><button class="back-top">🔝 Back to Top</button></a>
+  </div>
+</footer>
   </div>
 
   <!-- Scripts -->
@@ -278,4 +306,4 @@ window.showPlayerDetails = function (name, rank, icon, wins) {
   });
 </script>
 </body>
-  </html>
+    </html>
