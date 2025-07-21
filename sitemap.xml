@@ -3,14 +3,98 @@
 
   <url>
     <loc>https://www.godlevel.fun/</loc>
-    <lastmod>2025-06-26</lastmod>
+    <lastmod>2025-07-21</lastmod>
     <priority>1.00</priority>
   </url>
 
   <url>
+    <loc>https://www.godlevel.fun/about-us.html</loc>
+    <lastmod>2025-07-21</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://www.godlevel.fun/board-size.html</loc>
+    <lastmod>2025-07-21</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://www.godlevel.fun/contact-us.html</loc>
+    <lastmod>2025-07-21</lastmod>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.godlevel.fun/faq.html</loc>
+    <lastmod>2025-07-21</lastmod>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.godlevel.fun/features.html</loc>
+    <lastmod>2025-07-21</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
     <loc>https://www.godlevel.fun/game.html</loc>
-    <lastmod>2025-06-27</lastmod>
-    <priority>0.90</priority>
+    <lastmod>2025-07-21</lastmod>
+    <priority>1.00</priority>
+  </url>
+
+  <url>
+    <loc>https://www.godlevel.fun/game-tricks.html</loc>
+    <lastmod>2025-07-21</lastmod>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.godlevel.fun/how-to-play.html</loc>
+    <lastmod>2025-07-21</lastmod>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://www.godlevel.fun/index.html</loc>
+    <lastmod>2025-07-21</lastmod>
+    <priority>1.00</priority>
+  </url>
+
+  <url>
+    <loc>https://www.godlevel.fun/leaderboard.html</loc>
+    <lastmod>2025-07-21</lastmod>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://www.godlevel.fun/privacy-policy.html</loc>
+    <lastmod>2025-07-21</lastmod>
+    <priority>0.60</priority>
+  </url>
+
+  <url>
+    <loc>https://www.godlevel.fun/terms-and-conditions.html</loc>
+    <lastmod>2025-07-21</lastmod>
+    <priority>0.60</priority>
+  </url>
+
+  <url>
+    <loc>https://www.godlevel.fun/robots.txt</loc>
+    <lastmod>2025-06-25</lastmod>
+    <priority>0.30</priority>
+  </url>
+
+  <url>
+    <loc>https://www.godlevel.fun/sitemap.xml</loc>
+    <lastmod>2025-07-21</lastmod>
+    <priority>0.20</priority>
+  </url>
+
+  <url>
+    <loc>https://www.godlevel.fun/ultimate-mode.html</loc>
+    <lastmod>2025-07-21</lastmod>
+    <priority>0.85</priority>
   </url>
 
 </urlset>
