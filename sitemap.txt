@@ -1,2 +1,16 @@
 https://www.godlevel.fun/
 https://www.godlevel.fun/game.html
+https://www.godlevel.fun/about-us.html
+https://www.godlevel.fun/board-size.html
+https://www.godlevel.fun/contact-us.html
+https://www.godlevel.fun/faq.html
+https://www.godlevel.fun/features.html
+https://www.godlevel.fun/game-tricks.html
+https://www.godlevel.fun/how-to-play.html
+https://www.godlevel.fun/index.html
+https://www.godlevel.fun/leaderboard.html
+https://www.godlevel.fun/privacy-policy.html
+https://www.godlevel.fun/terms-and-conditions.html
+https://www.godlevel.fun/robots.txt
+https://www.godlevel.fun/sitemap.xml
+https://www.godlevel.fun/ultimate-mode.html
