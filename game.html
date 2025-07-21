@@ -2,12 +2,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Tic Tac Toe 🎮 God AI को हराएं | OX Game Pro 🏆</title>
+  <title>Tic Tac Toe 🎮 God AI को हराएं | ultimate </title>
 
   <!-- SEO Meta Tags -->
   <meta name="description" content="Tic Tac Toe में खेलें God AI के खिलाफ। चुनौती स्वीकार करें, रैंक पाएं और लीडरबोर्ड पर छा जाएं। अभी खेलें!">
   <meta name="keywords" content="Tic Tac Toe, God AI, OX Game, Brain Game, Online Game, Multiplayer, OX Game Pro, Leaderboard Game">
-  <meta name="author" content="GodLevel Team">
+  <meta name="author" content="Ankit Thakur">
   <meta name="robots" content="index, follow" />
 
   <!-- Favicon -->
@@ -85,16 +85,24 @@
      <button class="undo-btn">
         <span id= "undo-btn" class="emoji primary">⏰</span><span class="emoji backup">↩️</span>
       </button>
-  <button  class="menu-btn">
+  <div  class="menu-btn">
         ☰
-      </button>
+      </div>
 
 <!-- Sidebar -->
 <div id="sidebar" class="sidebar">
+  <style>
+    .sidebar ul li a {
+      text-decoration: none;
+      color: inherit;
+    }
+  </style>
   <ul>
     <li>🔐 Login</li>
-  <li>🎮 Game Tricks</li> <li>⚙️ Settings</li>
-    <li>❓ Help</li>
+    <li><a href="game-tricks.html">🎮 Game Tricks</a></li>
+    <li>⚙️ Settings</li>
+    <li><a href="contact-us.html">❓ Help</a></li>
+    <li><a href="faq.html">📄 FAQ</a></li>
   </ul>
 </div>
       
@@ -179,6 +187,19 @@
 
     <div class="ad-space"></div>
   </div>
+  <script>
+  // सभी बटन सेलेक्ट करो
+  document.querySelectorAll("button").forEach(button => {
+    button.addEventListener("click", () => {
+      button.classList.add("clicked");
+
+      // 0.5 सेकंड बाद remove कर दो ताकि वापस normal हो जाए
+      setTimeout(() => {
+        button.classList.remove("clicked");
+      }, 500); // 500 milliseconds = 0.5 seconds
+    });
+  });
+</script>
   <script>
 function supportsEmoji(emoji) {
   const canvas = document.createElement('canvas');
@@ -274,40 +295,7 @@ window.addEventListener('DOMContentLoaded', () => {
     submitScore(rawName); // 🔄 रॉ नाम भेजा जाएगा, लेकिन अंदर format हो जाएगा
   }
 </script>
-<!-- ✅ Debug log viewer -->
-<div id="debug-log" style="background:#111; color:#0f0; font-family:monospace; font-size:14px; padding:10px; margin:10px; max-height:200px; overflow:auto;">
-  <strong>📋 Debug Console:</strong><br>
-</div>
 
-<script>
-(function setupDebugConsole() {
-  const logDiv = document.getElementById("debug-log");
-  function logToDiv(type, args) {
-    const msg = Array.from(args).map(a => (typeof a === "object" ? JSON.stringify(a) : a)).join(" ");
-    const el = document.createElement("div");
-    el.textContent = `[${type}] ${msg}`;
-    logDiv.appendChild(el);
-    logDiv.scrollTop = logDiv.scrollHeight;
-  }
-
-  const originalLog = console.log;
-  const originalError = console.error;
-
-  console.log = function (...args) {
-    originalLog.apply(console, args);
-    logToDiv("LOG", args);
-  };
-
-  console.error = function (...args) {
-    originalError.apply(console, args);
-    logToDiv("ERROR", args);
-  };
-
-  window.addEventListener("error", function (e) {
-    logToDiv("JS ERROR", [e.message]);
-  });
-})();
-</script>
 <script>
   const menuBtn = document.querySelector(".menu-btn");
   const sidebar = document.querySelector("#sidebar");
@@ -332,5 +320,4 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 </script>
 </body>
-  </html>
-    
+</html>
