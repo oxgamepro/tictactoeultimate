@@ -110,8 +110,8 @@ padding: 1vw 2vw;
   width: fit-content;
   height: auto;
 
-  border-radius: 0.5rem;
-  border: 2px solid #CAC20038;
+  border-radius: 1.5vw;
+  border: 0.5vw solid #CAC20038;
   background: radial-gradient(circle, #F8FF8E63 50%, #D48EFF61 100%);
 }
 
