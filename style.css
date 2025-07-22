@@ -98,18 +98,35 @@
   
 }
 
-.threeline{
-  position: relative;
-  left: 30vw;
-  height: 7vw;
-  margin-top: 3vw;
-  padding: 1.5vw;
-  border-radius: 0.5vw;
-border: 0.5vw solid #CAC20038;
-align-items: center;
-  background: radial-gradient(circle, #F8FF8E40 60%, 
-#D48EFF40 100%);
+.threeline {
+  display: flex;
   
+  align-items: center;
+
+padding: 1vw 2vw;
+  margin-top:1.5vw;
+  margin-left: auto;
+  margin-right:5vw;
+  width: fit-content;
+  height: auto;
+
+  border-radius: 0.5rem;
+  border: 2px solid #CAC20038;
+  background: radial-gradient(circle, #F8FF8E63 50%, #D48EFF61 100%);
+}
+
+/* Responsive SVG inside the div */
+.threeline svg {
+  width: 8vw;
+  height: 7.5vw;
+}
+
+/* Bigger size for large screens (desktop mode) */
+@media (min-width: 768px) {
+  .threeline svg {
+    width: 8vw;
+    height: 8vw;
+  }
 }
 
 
