@@ -436,6 +436,59 @@ padding-top:1.7vw;
   top:-3vw ;
   
 }
+.leaderboard-title {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .leaderboard div {
+      cursor: pointer;
+      color: blue;
+    }
+
+    #player-details {
+      margin-top: 15px;
+      font-weight: bold;
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: fit-content;
+    }
+
+    .leaderboard a.glow {
+      color: #004CDC;
+      animation: glow-animation 1.5s infinite alternate;
+    }
+
+    @keyframes glow-animation {
+      0% {
+        text-shadow: 0 0 5px #ffd700, 0 0 10px #ffcc00;
+      }
+      100% {
+        text-shadow: 0 0 10px #fff700, 0 0 20px #ffaa00;
+      }
+    }
+
+    .leaderboard li {
+      display: flex;
+      align-items: center;
+      gap: 0.1vw;
+      margin-bottom: 1vw;
+    }
+
+    .leaderboard li a {
+      display: inline-block;
+      max-width: 180px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-decoration: none;
+      color: inherit;
+      font-weight: bold;
+    }
+
+      
+
+
   #ads{
     font-size: 6vw;
     height: 40vw;
