@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Days+One&family=Amaranth:wght@700&family=Autour+One&family=Bangers&display=swap" rel="stylesheet" />
-  <link href="https://fonts.cdnfonts.com/css/chunkfive" rel="stylesheet" />
+
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="style.css" />
@@ -50,62 +50,11 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
-  <!-- Custom Styles -->
-  <style>
-    .leaderboard-title {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-
-    .leaderboard div {
-      cursor: pointer;
-      color: blue;
-    }
-
-    #player-details {
-      margin-top: 15px;
-      font-weight: bold;
-      border: 1px solid #ccc;
-      padding: 10px;
-      width: fit-content;
-    }
-
-    .leaderboard a.glow {
-      color: #004CDC;
-      animation: glow-animation 1.5s infinite alternate;
-    }
-
-    @keyframes glow-animation {
-      0% {
-        text-shadow: 0 0 5px #ffd700, 0 0 10px #ffcc00;
-      }
-      100% {
-        text-shadow: 0 0 10px #fff700, 0 0 20px #ffaa00;
-      }
-    }
-
-    .leaderboard li {
-      display: flex;
-      align-items: center;
-      gap: 0.1vw;
-      margin-bottom: 1vw;
-    }
-
-    .leaderboard li a {
-      display: inline-block;
-      max-width: 180px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-decoration: none;
-      color: inherit;
-      font-weight: bold;
-    }
-  </style>
+  
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8734168831211003"
      crossorigin="anonymous"></script>
 </head>
-<body>
+<body id="top">
   <div class="container">
 
 <!-- Header -->
@@ -184,8 +133,7 @@
        (adsbygoogle = window.adsbygoogle || []).push({});
   </script>
 </div>
-<!-- Add this to the top of your body -->
-<body id="top">
+
 
 <!-- Footer -->
 <footer class="footer">
@@ -217,106 +165,6 @@
 
   <!-- Scripts -->
 <script src="script.js"></script>
-  <script>
-    // सभी बटन को select करो और loop में apply करो
-    document.querySelectorAll("button").forEach(button => {
-      button.addEventListener("click", () => {
-        // पहले से लगी clicked class को remove करो
-        button.classList.remove("clicked");
-        void button.offsetWidth; // reflow trick
-        // फिर class जोड़ो जिससे छोटा हो
-        button.classList.add("clicked");
-        // 0.5 सेकंड बाद class हटा दो जिससे वापस normal हो
-        setTimeout(() => {
-          button.classList.remove("clicked");
-        }, 200);
-      });
-    });
-  </script>
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBeGU1zEnmYmj2AM-IGG--5RHDtrzplsWE",
-    authDomain: "leaderboard-15c73.firebaseapp.com",
-    databaseURL: "https://leaderboard-15c73-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "leaderboard-15c73",
-    storageBucket: "leaderboard-15c73.appspot.com",
-    messagingSenderId: "981645460996",
-    appId: "1:981645460996:web:a33c923a13df74ed7b9751"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-
-  const rankIcons = ["🏆", "🎖️", "🏅", "🌟", "🌟", "⭐", "⭐", "⭐", "⭐", "⭐"];
-
-  function loadLeaderboard() {
-  db.ref("scores").once("value").then(snapshot => {
-    const data = snapshot.val();
-    if (!data) return;
-
-    const list = Object.values(data);
-    list.sort((a, b) => b.wins - a.wins);
-
-    const ol = document.querySelector(".leaderboard");
-    ol.innerHTML = "";
-
-    list.forEach((player, index) => {
-      const rank = index + 1;
-      const icon = rankIcons[index] || "";
-      const li = document.createElement("li");
-
-      // ✅ Top 10: Only emoji | 11 and below: Only number
-      const displayText = index < 10 ? `${icon}` : `${rank}`;
-
-      li.innerHTML = `
-        <span class="rank-icon">${displayText}</span> 
-        <a
-          class="${rank === 1 ? 'glow' : ''}"
-          onclick="showPlayerDetails('${player.name}', ${rank}, '${icon}', ${player.wins})">
-          ${player.name}
-        </a>
-      `;
-
-      ol.appendChild(li);
-    });
-  });
-}
-
-window.showPlayerDetails = function (name, rank, icon, wins) {
-  const detailDiv = document.getElementById("player-details");
-  detailDiv.innerHTML = `
-    <hr>
-    <p><strong>Rank:</strong> ${rank} ${icon}</p>
-    <p><strong>Name:</strong> ${name}</p>
-    <p><strong>Wins:</strong> ${wins}</p>
-  `;
-};
-
-  window.onload = loadLeaderboard;
-</script>
-<script>
-  const menuBtn = document.querySelector(".threeline");
-  const sidebar = document.querySelector("#sidebar");
-
-  // 1. Menu पर क्लिक → Toggle open class
-  menuBtn.addEventListener("click", function (e) {
-    e.stopPropagation(); // ताकि नीचे वाला event ना चले
-    sidebar.classList.toggle("open");
-  });
-
-  // 2. Sidebar के अंदर क्लिक किया तो भी बंद हो जाए (optional)
-  sidebar.addEventListener("click", function (e) {
-    if (e.target.tagName === "LI") {
-      sidebar.classList.remove("open");
-    }
-    e.stopPropagation(); // अंदर क्लिक करने पर body वाला इवेंट ना चले
-  });
-
-  // 3. Body पर कहीं भी क्लिक किया तो sidebar बंद
-  document.body.addEventListener("click", function () {
-    sidebar.classList.remove("open");
-  });
-</script>
 </body>
-                                       </html>
+  </html>
