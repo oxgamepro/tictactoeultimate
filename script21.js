@@ -273,7 +273,7 @@ function updateScoreboard() {
 
 function initGame() {
   boardSize = parseInt(localStorage.getItem('selectedBoardSize')) || 3;
-  gameLevel = localStorage.getItem('gameLevel') || 'Hard';
+  gameLevel = localStorage.getItem('selectedGameLevel') || 'Hard';
   currentPlayer = 'X';
   gameOver = false;
   statusMessage.textContent = 'Your Turn';
