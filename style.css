@@ -476,7 +476,7 @@ padding-top:1.7vw;
     }
 
     .leaderboard li a {
-      display: inline-block;
+      
       max-width: 180px;
       white-space: nowrap;
       overflow: hidden;
