@@ -208,7 +208,10 @@ function vibrateDevice() {
 let board = [];
 let boardSize = parseInt(localStorage.getItem('selectedBoardSize')) || 3;
 let gameLevel = localStorage.getItem('gameLevel') || 'Hard';
-
+// Ensure selectedGameLevel is set if missing
+if (!localStorage.getItem('selectedGameLevel')) {
+  localStorage.setItem('selectedGameLevel', gameLevel); // fallback to 'Hard'
+}
 let currentPlayer = 'X';
 let gameOver = false;
 let winCount = 0;
