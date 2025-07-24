@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Tic Tac Toe – Play 3x3, 5x5 & Beat God AI</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Play Tic Tac Toe against God AI with unique board sizes like 3x3, 5x5, 7x7, and Ultimate mode where older moves vanish. Challenge your brain and climb the global leaderboard!">
+  <meta name="keywords" content="Tic Tac Toe, God AI, Ultimate Tic Tac Toe, 5x5 Tic Tac Toe, 7x7 Tic Tac Toe, Online Game, Brain Game, Multiplayer, Leaderboard Game">
+  <meta name="author" content="Ankit Thakur">
+  <meta name="robots" content="index, follow" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://www.godlevel.fun/" />
+
+  <!-- Open Graph Tags (for social sharing) -->
+  <meta property="og:title" content="Tic Tac Toe 🎮 Defeat God AI | OX Game Pro 🏆" />
+  <meta property="og:description" content="Defeat God AI, earn rank, and dominate the leaderboard. Play now on OX Game Pro!" />
+  <meta property="og:image" content="https://www.godlevel.fun/icon.png" />
+  <meta property="og:url" content="https://www.godlevel.fun/" />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="/icon.png" type="image/png" sizes="32x32" />
+  <link rel="shortcut icon" href="/icon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/icon.png" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Days+One&family=Amaranth:wght@700&family=Autour+One&family=Bangers&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P6BPV52JFE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-P6BPV52JFE');
+  </script>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8734168831211003"
+     crossorigin="anonymous"></script>
+</head>
+
+<body id="top">
+  <div class="container">
+
+<!-- Header -->
+<header class="header">
+  <h1 translate="no" class="text-3d-wrapper">
+    <img src="icon.png" alt="Logo" class="logo">
+    <span class="text-3d">Tic Tac Toe</span>
+  </h1>
+
+  <div class="threeline">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect y="4" width="24" height="3" fill="black"/>
+      <rect y="11" width="24" height="3" fill="black"/>
+      <rect y="18" width="24" height="3" fill="black"/>
+    </svg>
+  </div>
+</header>
+
+<!-- Sidebar -->
+<div id="sidebar" class="sidebar">
+  <style>
+    .sidebar ul li a {
+      text-decoration: none;
+      color: inherit;
+    }
+  </style>
+  <ul>
+    <li>🔐 Login</li>
+    <li><a href="game-tricks.html">🎮 Game Tricks</a></li>
+    <li>⚙️ Settings</li>
+    <li><a href="contact-us.html">❓ Help</a></li>
+    <li><a href="faq.html">📄 FAQ</a></li>
+  </ul>
+</div>
+
+    <!-- Info Message -->
+    <p class="info">💥Your name will be registered after winning against God AI⤵️</p>
+
+    <!-- Main Section -->
+    <main class="main-section">
+
+      <!-- Left Section -->
+      <section class="left-section">
+        <h2 class="board-title">Board Size</h2>
+        <div class="board-options" role="group">
+          <button class="board-size">3×3</button>
+          <button class="board-size">5×5</button>
+          <button class="board-size">7×7</button>
+        </div>
+
+        <h2 class="how-to-play">How to Play</h2>
+        <div class="how-to">
+          <a href="game.html" style="text-decoration: none"><button class="play1">👤  VS  🤖</button></a>
+          <a href="game.html" style="text-decoration: none"><button class="play2">👤  VS  👤</button></a>
+          <button class="play3">Online Play</button>
+        </div>
+      </section>
+
+      <!-- Right Section with LIVE Leaderboard -->
+      <aside class="winners-section" aria-label="GOD MODE Leaderboard">
+        <h2 translate="no"><span aria-hidden="true">🔥</span> GOD MODE Leaderboard <span aria-hidden="true">🏆</span></h2>
+  
+        <ol class="leaderboard"></ol>
+        <div id="player-details"></div>
+      </aside>
+
+    </main>
+
+<!-- Google AdSense Poster Ad -->
+<div id="ads" >
+  <ins class="adsbygoogle"
+       data-ad-client="ca-pub-8734168831211003"
+       data-ad-slot="1234567890"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <!-- Pages Section -->
+  <div class="footer-section">
+    <h3>Pages</h3>
+    <a href="about-us.html"><button>About Us</button></a>
+    <a href="contact-us.html"><button>Contact Us</button></a>
+    <a href="privacy-policy.html"><button>Privacy Policy</button></a>
+    <a href="terms-and-conditions.html"><button>Terms & Conditions</button></a>
+  </div>
+
+  <!-- Social Section -->
+  <div class="footer-section1">
+    <h3>Follow Us</h3>
+    <a href="https://youtube.com" target="_blank"><button class="yt">📺 YouTube</button></a>
+    <a href="https://t.me" target="_blank"><button class="telegram">📱 Telegram</button></a>
+  </div>
+
+  <!-- Info Section -->
+  <div class="footer-section info">
+    <h3>Info</h3>
+    <p>© 2025 God Level Tic Tac Toe</p>
+    <p>Designed by Ankit Thakur</p>
+    <a href="#top"><button class="back-top">🔝 Back to Top</button></a>
+  </div>
+</footer>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+
+</body>
+</html>
