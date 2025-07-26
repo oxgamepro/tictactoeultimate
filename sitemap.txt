@@ -13,4 +13,5 @@ https://www.godlevel.fun/privacy-policy.html
 https://www.godlevel.fun/terms-and-conditions.html
 https://www.godlevel.fun/robots.txt
 https://www.godlevel.fun/sitemap.xml
+https://www.godlevel.fun/ads.txt
 https://www.godlevel.fun/ultimate-mode.html
